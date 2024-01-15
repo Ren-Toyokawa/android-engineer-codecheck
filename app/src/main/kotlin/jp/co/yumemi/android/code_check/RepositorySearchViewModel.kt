@@ -28,14 +28,12 @@ class RepositorySearchViewModel(
     val context: Context,
 ) : ViewModel() {
     /**
-     * FIXME: 関数が適切でないため、別のブランチで修正する
-     *
      * inputTextを元にリポジトリを検索する
      *
      * @param inputText 検索文字列
      * @return リポジトリ情報のリスト
      */
-    fun searchResults(inputText: String): List<RepositoryInfo> =
+    fun searchRepository(inputText: String): List<RepositoryInfoItem> =
         runBlocking {
             val client = HttpClient(Android)
 
@@ -50,7 +48,7 @@ class RepositorySearchViewModel(
 
                 val jsonItems = jsonBody.optJSONArray("items")!!
 
-                val repositoryInfoList = mutableListOf<RepositoryInfo>()
+                val repositoryInfoItemList = mutableListOf<RepositoryInfoItem>()
 
                  // アイテムの個数分ループし、JsonをパースしてRepositoryInfoのリストを作成する
                 for (i in 0 until jsonItems.length()) {
@@ -63,8 +61,8 @@ class RepositorySearchViewModel(
                     val forksCount = jsonItem.optLong("forks_conut")
                     val openIssuesCount = jsonItem.optLong("open_issues_count")
 
-                    repositoryInfoList.add(
-                        RepositoryInfo(
+                    repositoryInfoItemList.add(
+                        RepositoryInfoItem(
                             name = name,
                             ownerIconUrl = ownerIconUrl,
                             language = context.getString(R.string.written_language, language),
@@ -78,7 +76,7 @@ class RepositorySearchViewModel(
 
                 lastSearchDate = Date()
 
-                return@async repositoryInfoList.toList()
+                return@async repositoryInfoItemList.toList()
             }.await()
         }
 }
@@ -87,7 +85,7 @@ class RepositorySearchViewModel(
  * Githubのリポジトリ情報
  */
 @Parcelize
-data class RepositoryInfo(
+data class RepositoryInfoItem(
     val name: String,
     val ownerIconUrl: String,
     val language: String,

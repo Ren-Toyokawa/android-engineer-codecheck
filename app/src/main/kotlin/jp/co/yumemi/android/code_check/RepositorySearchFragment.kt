@@ -53,8 +53,8 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
         val adapter =
             CustomAdapter(
                 object : CustomAdapter.OnItemClickListener {
-                    override fun itemClick(repositoryInfo: RepositoryInfo) {
-                        navigateRepositoryInfoFragment(repositoryInfo)
+                    override fun itemClick(repositoryInfoItem: RepositoryInfoItem) {
+                        navigateRepositoryInfoFragment(repositoryInfoItem)
                     }
                 },
             )
@@ -65,7 +65,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
                     editText.text.toString().let {
                         // IMEの検索ボタンが押されたときに、Githubのレポジトリを検索
                         // 結果をRecyclerViewに表示する
-                        viewModel.searchResults(it).apply {
+                        viewModel.searchRepository(it).apply {
                             adapter.submitList(this)
                         }
                     }
@@ -83,13 +83,13 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
     /**
      * リポジトリ情報画面に遷移する
-     * @param repositoryInfo 検索したレポジトリの情報
+     * @param repositoryInfoItem 検索したレポジトリの情報
      */
-    fun navigateRepositoryInfoFragment(repositoryInfo: RepositoryInfo) {
+    fun navigateRepositoryInfoFragment(repositoryInfoItem: RepositoryInfoItem) {
         val action =
             RepositorySearchFragmentDirections
                 .actionRepositorySearchFragmentToRepositoryInfoFragment(
-                    repositoryInfo = repositoryInfo,
+                    repositoryInfoItem = repositoryInfoItem,
                 )
         findNavController().navigate(action)
     }
@@ -98,29 +98,29 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
 // RecyclerViewのアイテムの差分を計算し、 必要なアップデートのみを行うようにするためのCallback
 val diffUtil =
-    object : DiffUtil.ItemCallback<RepositoryInfo>() {
+    object : DiffUtil.ItemCallback<RepositoryInfoItem>() {
         /**
          * 名前を比較し、二つのアイテムが同一のアイテムを表しているかどうかを判断する
-         * @param oldRepositoryInfo 古いリポジトリ情報
-         * @param newRepositoryInfo 新しいリポジトリ情報
+         * @param oldItem 古いリポジトリ情報
+         * @param newItem 新しいリポジトリ情報
          */
         override fun areItemsTheSame(
-            oldRepositoryInfo: RepositoryInfo,
-            newRepositoryInfo: RepositoryInfo,
+            oldItem: RepositoryInfoItem,
+            newItem: RepositoryInfoItem,
         ): Boolean {
-            return oldRepositoryInfo.name == newRepositoryInfo.name
+            return oldItem.name == newItem.name
         }
 
         /**
          * 二つのアイテムのデータ内容が等しいかどうかを判断する
-         * @param oldRepositoryInfo 古いリポジトリ情報
-         * @param newRepositoryInfo 新しいリポジトリ情報
+         * @param oldItem 古いリポジトリ情報
+         * @param newItem 新しいリポジトリ情報
          */
         override fun areContentsTheSame(
-            oldRepositoryInfo: RepositoryInfo,
-            newRepositoryInfo: RepositoryInfo,
+            oldItem: RepositoryInfoItem,
+            newItem: RepositoryInfoItem,
         ): Boolean {
-            return oldRepositoryInfo == newRepositoryInfo
+            return oldItem == newItem
         }
     }
 
@@ -131,11 +131,11 @@ val diffUtil =
  */
 class CustomAdapter(
     private val itemClickListener: OnItemClickListener,
-) : ListAdapter<RepositoryInfo, CustomAdapter.ViewHolder>(diffUtil) {
+) : ListAdapter<RepositoryInfoItem, CustomAdapter.ViewHolder>(diffUtil) {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     interface OnItemClickListener {
-        fun itemClick(repositoryInfo: RepositoryInfo)
+        fun itemClick(repositoryInfoItem: RepositoryInfoItem)
     }
 
     /**
