@@ -14,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
 
+/**
+ * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
+ */
 class RepositorySearchFragment: Fragment(R.layout.fragment_repository_search){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)

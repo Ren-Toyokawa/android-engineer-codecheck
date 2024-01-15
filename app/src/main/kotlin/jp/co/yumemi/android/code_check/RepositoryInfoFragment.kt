@@ -12,6 +12,9 @@ import coil.load
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryInfoBinding
 
+/**
+ * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
+ */
 class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     companion object {
         private const val TAG = "RepositoryInfoFragment"

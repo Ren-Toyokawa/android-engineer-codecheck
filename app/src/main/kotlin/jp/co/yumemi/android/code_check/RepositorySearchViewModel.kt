@@ -20,6 +20,7 @@ import org.json.JSONObject
 import java.util.*
 
 /**
+ * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
  * TwoFragment で使う
  */
 class RepositorySearchViewModel(
@@ -43,6 +44,7 @@ class RepositorySearchViewModel(
             val repositoryInfoList = mutableListOf<RepositoryInfo>()
 
             /**
+             * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
              * アイテムの個数分ループする
              */
             for (i in 0 until jsonItems.length()) {
