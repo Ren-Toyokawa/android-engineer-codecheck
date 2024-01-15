@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -33,7 +32,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
      * - RecyclerView のセットアップ
      * - 検索ボタンタップ時の挙動の設定
      *
-     * @param view View
+     * @param view
      * @param savedInstanceState 保存されたインスタンスの状態
      */
     override fun onViewCreated(
@@ -58,7 +57,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
                 if (action == EditorInfo.IME_ACTION_SEARCH) {
                     editText.text.toString().let {
                         // IMEの検索ボタンが押されたときに、Githubのレポジトリを検索
-                        // 結果をRecyclerViewに表示する
+                        // 結果をAdapterにセットする
                         viewModel.searchRepository(it).apply {
                             adapter.submitList(this)
                         }
@@ -79,12 +78,12 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
      * リポジトリ情報画面に遷移する
      * @param repositoryInfoItem ユーザーによって選択されたリポジトリの情報
      */
-    fun navigateRepositoryInfoFragment(repositoryInfoItem: RepositoryInfoItem) {
-        val action =
-            RepositorySearchFragmentDirections
-                .actionRepositorySearchFragmentToRepositoryInfoFragment(
-                    repositoryInfoItem = repositoryInfoItem,
-                )
+    private fun navigateRepositoryInfoFragment(repositoryInfoItem: RepositoryInfoItem) {
+        val action = RepositorySearchFragmentDirections
+            .actionRepositorySearchFragmentToRepositoryInfoFragment(
+                repositoryInfoItem = repositoryInfoItem,
+            )
+
         findNavController().navigate(action)
     }
 }
