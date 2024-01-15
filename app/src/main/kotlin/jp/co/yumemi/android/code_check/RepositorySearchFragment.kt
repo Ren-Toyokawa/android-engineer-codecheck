@@ -83,7 +83,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
     /**
      * リポジトリ情報画面に遷移する
-     * @param repositoryInfoItem 検索したレポジトリの情報
+     * @param repositoryInfoItem ユーザーによって選択されたリポジトリの情報
      */
     fun navigateRepositoryInfoFragment(repositoryInfoItem: RepositoryInfoItem) {
         val action =
