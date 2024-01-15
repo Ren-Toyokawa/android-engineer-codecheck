@@ -13,7 +13,7 @@ import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryInfoBinding
 
 /**
- * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
+ * リポジトリ情報画面
  */
 class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     companion object {
@@ -25,6 +25,13 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     private var binding: FragmentRepositoryInfoBinding? = null
     private val _binding get() = binding!!
 
+    /**
+     * FragmentのViewが生成された後に呼び出される。
+     * ここで、リポジトリ情報をViewにバインドし、UIを更新する。
+     *
+     * @param view このFragmentのRoot View
+     * @param savedInstanceState このフラグメントの以前の保存状態を含むBundle、再作成時にのみ非nullとなる
+     */
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,

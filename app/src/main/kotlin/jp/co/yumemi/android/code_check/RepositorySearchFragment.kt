@@ -19,9 +19,15 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
 
 /**
- * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
+ * リポジトリ検索画面
  */
 class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
+    /**
+     * Viewが生成された後に呼び出される
+     *
+     * @param view ビュー
+     * @param savedInstanceState 保存されたインスタンスの状態
+     */
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -33,6 +39,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
         val viewModel = RepositorySearchViewModel(context!!)
 
         val layoutManager = LinearLayoutManager(context!!)
+
         val dividerItemDecoration =
             DividerItemDecoration(context!!, layoutManager.orientation)
         val adapter =
@@ -48,6 +55,8 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
             .setOnEditorActionListener { editText, action, _ ->
                 if (action == EditorInfo.IME_ACTION_SEARCH) {
                     editText.text.toString().let {
+                        // IMEの検索ボタンが押されたときに、Githubのレポジトリを検索
+                        // 結果をRecyclerViewに表示する
                         viewModel.searchResults(it).apply {
                             adapter.submitList(this)
                         }
@@ -64,6 +73,10 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
         }
     }
 
+    /**
+     * リポジトリ情報画面に遷移する
+     * @param repositoryInfo 検索したレポジトリの情報
+     */
     fun navigateRepositoryInfoFragment(repositoryInfo: RepositoryInfo) {
         val action =
             RepositorySearchFragmentDirections
@@ -91,6 +104,11 @@ val diffUtil =
         }
     }
 
+/**
+ * FIXME: クラス名が抽象的なため、適切な名前に変更する
+ *
+ * リポジトリ情報をRecyclerViewに表示するためのアダプター
+ */
 class CustomAdapter(
     private val itemClickListener: OnItemClickListener,
 ) : ListAdapter<RepositoryInfo, CustomAdapter.ViewHolder>(diffUtil) {
@@ -100,6 +118,12 @@ class CustomAdapter(
         fun itemClick(repositoryInfo: RepositoryInfo)
     }
 
+    /**
+     * ViewHolderが生成されたときに呼び出される
+     *
+     * @param parent 親のビュー
+     * @param viewType ビューのタイプ, ここでは1つしかないので未使用
+     */
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -110,6 +134,12 @@ class CustomAdapter(
         return ViewHolder(view)
     }
 
+    /**
+     * ViewHolderにデータをバインドする
+     *
+     * @param holder ViewHolder
+     * @param position リストの位置
+     */
     override fun onBindViewHolder(
         holder: ViewHolder,
         position: Int,

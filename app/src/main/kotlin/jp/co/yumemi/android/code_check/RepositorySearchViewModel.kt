@@ -22,13 +22,19 @@ import org.json.JSONObject
 import java.util.Date
 
 /**
- * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
- * TwoFragment で使う
+ * リポジトリ検索画面のViewModel
  */
 class RepositorySearchViewModel(
     val context: Context,
 ) : ViewModel() {
-    // 検索結果
+    /**
+     * FIXME: 関数が適切でないため、別のブランチで修正する
+     *
+     * inputTextを元にリポジトリを検索する
+     *
+     * @param inputText 検索文字列
+     * @return リポジトリ情報のリスト
+     */
     fun searchResults(inputText: String): List<RepositoryInfo> =
         runBlocking {
             val client = HttpClient(Android)
@@ -46,10 +52,7 @@ class RepositorySearchViewModel(
 
                 val repositoryInfoList = mutableListOf<RepositoryInfo>()
 
-                /**
-                 * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
-                 * アイテムの個数分ループする
-                 */
+                 // アイテムの個数分ループし、JsonをパースしてRepositoryInfoのリストを作成する
                 for (i in 0 until jsonItems.length()) {
                     val jsonItem = jsonItems.optJSONObject(i)!!
                     val name = jsonItem.optString("full_name")
@@ -80,6 +83,9 @@ class RepositorySearchViewModel(
         }
 }
 
+/**
+ * Githubのリポジトリ情報
+ */
 @Parcelize
 data class RepositoryInfo(
     val name: String,
