@@ -22,14 +22,18 @@ import org.json.JSONObject
 import java.util.Date
 
 /**
- * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
- * TwoFragment で使う
+ * リポジトリ検索画面のViewModel
  */
 class RepositorySearchViewModel(
     val context: Context,
 ) : ViewModel() {
-    // 検索結果
-    fun searchResults(inputText: String): List<RepositoryInfo> =
+    /**
+     * inputTextを元にリポジトリを検索する
+     *
+     * @param inputText 検索文字列
+     * @return リポジトリ情報のリスト
+     */
+    fun searchRepository(inputText: String): List<RepositoryInfoItem> =
         runBlocking {
             val client = HttpClient(Android)
 
@@ -44,12 +48,9 @@ class RepositorySearchViewModel(
 
                 val jsonItems = jsonBody.optJSONArray("items")!!
 
-                val repositoryInfoList = mutableListOf<RepositoryInfo>()
+                val repositoryInfoItemList = mutableListOf<RepositoryInfoItem>()
 
-                /**
-                 * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
-                 * アイテムの個数分ループする
-                 */
+                 // アイテムの個数分ループし、JsonをパースしてRepositoryInfoのリストを作成する
                 for (i in 0 until jsonItems.length()) {
                     val jsonItem = jsonItems.optJSONObject(i)!!
                     val name = jsonItem.optString("full_name")
@@ -60,8 +61,8 @@ class RepositorySearchViewModel(
                     val forksCount = jsonItem.optLong("forks_conut")
                     val openIssuesCount = jsonItem.optLong("open_issues_count")
 
-                    repositoryInfoList.add(
-                        RepositoryInfo(
+                    repositoryInfoItemList.add(
+                        RepositoryInfoItem(
                             name = name,
                             ownerIconUrl = ownerIconUrl,
                             language = context.getString(R.string.written_language, language),
@@ -75,13 +76,16 @@ class RepositorySearchViewModel(
 
                 lastSearchDate = Date()
 
-                return@async repositoryInfoList.toList()
+                return@async repositoryInfoItemList.toList()
             }.await()
         }
 }
 
+/**
+ * Githubのリポジトリ情報
+ */
 @Parcelize
-data class RepositoryInfo(
+data class RepositoryInfoItem(
     val name: String,
     val ownerIconUrl: String,
     val language: String,
