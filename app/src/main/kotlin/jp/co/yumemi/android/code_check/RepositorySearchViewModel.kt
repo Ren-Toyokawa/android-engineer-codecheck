@@ -11,7 +11,7 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -20,14 +20,15 @@ import org.json.JSONObject
 import java.util.*
 
 /**
+ * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
  * TwoFragment で使う
  */
-class OneViewModel(
+class RepositorySearchViewModel(
     val context: Context
 ) : ViewModel() {
 
     // 検索結果
-    fun searchResults(inputText: String): List<item> = runBlocking {
+    fun searchResults(inputText: String): List<RepositoryInfo> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
@@ -40,9 +41,10 @@ class OneViewModel(
 
             val jsonItems = jsonBody.optJSONArray("items")!!
 
-            val items = mutableListOf<item>()
+            val repositoryInfoList = mutableListOf<RepositoryInfo>()
 
             /**
+             * FIXME: コメントが適切でないため、コメント修正ブランチで修正する
              * アイテムの個数分ループする
              */
             for (i in 0 until jsonItems.length()) {
@@ -55,8 +57,8 @@ class OneViewModel(
                 val forksCount = jsonItem.optLong("forks_conut")
                 val openIssuesCount = jsonItem.optLong("open_issues_count")
 
-                items.add(
-                    item(
+                repositoryInfoList.add(
+                    RepositoryInfo(
                         name = name,
                         ownerIconUrl = ownerIconUrl,
                         language = context.getString(R.string.written_language, language),
@@ -70,13 +72,13 @@ class OneViewModel(
 
             lastSearchDate = Date()
 
-            return@async items.toList()
+            return@async repositoryInfoList.toList()
         }.await()
     }
 }
 
 @Parcelize
-data class item(
+data class RepositoryInfo(
     val name: String,
     val ownerIconUrl: String,
     val language: String,
