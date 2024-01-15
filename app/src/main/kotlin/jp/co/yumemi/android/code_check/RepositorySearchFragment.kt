@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
+import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
 
 /**
  * リポジトリ検索画面
@@ -130,7 +131,8 @@ val diffUtil =
 class RepositoryInfoAdapter(
     private val itemClickListener: OnItemClickListener,
 ) : ListAdapter<RepositoryInfoItem, RepositoryInfoAdapter.ViewHolder>(diffUtil) {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(val binding: LayoutItemBinding) : RecyclerView.ViewHolder(binding.root)
+
 
     interface OnItemClickListener {
         fun itemClick(repositoryInfoItem: RepositoryInfoItem)
@@ -142,14 +144,13 @@ class RepositoryInfoAdapter(
      * @param parent 親のView
      * @param viewType Viewの種別, ここでは1つしかないので未使用
      */
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_item, parent, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = LayoutItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
     /**
@@ -158,14 +159,9 @@ class RepositoryInfoAdapter(
      * @param holder ViewHolder
      * @param position リストの位置
      */
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text =
-            item.name
-
+        holder.binding.repositoryNameView.text = item.name
         holder.itemView.setOnClickListener {
             itemClickListener.itemClick(item)
         }
