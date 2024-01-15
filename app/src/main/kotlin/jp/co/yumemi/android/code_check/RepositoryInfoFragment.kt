@@ -23,7 +23,6 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     private val args: RepositoryInfoFragmentArgs by navArgs()
 
     private var binding: FragmentRepositoryInfoBinding? = null
-    private val _binding get() = binding!!
 
     /**
      * FragmentのViewが生成された後に呼び出される。
@@ -44,12 +43,14 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
         val repositoryInfo = args.repositoryInfoItem
 
-        _binding.ownerIconView.load(repositoryInfo.ownerIconUrl)
-        _binding.nameView.text = repositoryInfo.name
-        _binding.languageView.text = repositoryInfo.language
-        _binding.starsView.text = "${repositoryInfo.stargazersCount} stars"
-        _binding.watchersView.text = "${repositoryInfo.watchersCount} watchers"
-        _binding.forksView.text = "${repositoryInfo.forksCount} forks"
-        _binding.openIssuesView.text = "${repositoryInfo.openIssuesCount} open issues"
+        binding?.apply {
+            ownerIconView.load(repositoryInfo.ownerIconUrl)
+            nameView.text = repositoryInfo.name
+            languageView.text = repositoryInfo.language
+            starsView.text = "${repositoryInfo.stargazersCount} stars"
+            watchersView.text = "${repositoryInfo.watchersCount} watchers"
+            forksView.text = "${repositoryInfo.forksCount} forks"
+            openIssuesView.text = "${repositoryInfo.openIssuesCount} open issues"
+        }
     }
 }
