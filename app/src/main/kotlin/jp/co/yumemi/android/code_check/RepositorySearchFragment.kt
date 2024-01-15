@@ -20,12 +20,19 @@ import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBindi
 
 /**
  * リポジトリ検索画面
+ * 画面上部のテキストフィールドに入力された文字列を元に、Githubのレポジトリを検索する
  */
 class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
     /**
      * Viewが生成された後に呼び出される
      *
-     * @param view ビュー
+     * ここで、以下の処理を行っている
+     * - View Binding
+     * - ViewModelの初期化
+     * - RecyclerView のセットアップ
+     * - 検索ボタンタップ時の挙動の設定
+     *
+     * @param view View
      * @param savedInstanceState 保存されたインスタンスの状態
      */
     override fun onViewCreated(
@@ -42,6 +49,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
         val dividerItemDecoration =
             DividerItemDecoration(context!!, layoutManager.orientation)
+
         val adapter =
             CustomAdapter(
                 object : CustomAdapter.OnItemClickListener {
@@ -87,8 +95,15 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
     }
 }
 
+
+// RecyclerViewのアイテムの差分を計算し、 必要なアップデートのみを行うようにするためのCallback
 val diffUtil =
     object : DiffUtil.ItemCallback<RepositoryInfo>() {
+        /**
+         * 名前を比較し、二つのアイテムが同一のアイテムを表しているかどうかを判断する
+         * @param oldRepositoryInfo 古いリポジトリ情報
+         * @param newRepositoryInfo 新しいリポジトリ情報
+         */
         override fun areItemsTheSame(
             oldRepositoryInfo: RepositoryInfo,
             newRepositoryInfo: RepositoryInfo,
@@ -96,6 +111,11 @@ val diffUtil =
             return oldRepositoryInfo.name == newRepositoryInfo.name
         }
 
+        /**
+         * 二つのアイテムのデータ内容が等しいかどうかを判断する
+         * @param oldRepositoryInfo 古いリポジトリ情報
+         * @param newRepositoryInfo 新しいリポジトリ情報
+         */
         override fun areContentsTheSame(
             oldRepositoryInfo: RepositoryInfo,
             newRepositoryInfo: RepositoryInfo,
@@ -119,10 +139,10 @@ class CustomAdapter(
     }
 
     /**
-     * ViewHolderが生成されたときに呼び出される
+     * ViewHolderが生成された際に呼び出される
      *
-     * @param parent 親のビュー
-     * @param viewType ビューのタイプ, ここでは1つしかないので未使用
+     * @param parent 親のView
+     * @param viewType Viewの種別, ここでは1つしかないので未使用
      */
     override fun onCreateViewHolder(
         parent: ViewGroup,

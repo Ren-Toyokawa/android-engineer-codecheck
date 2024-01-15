@@ -27,7 +27,7 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
     /**
      * FragmentのViewが生成された後に呼び出される。
-     * ここで、リポジトリ情報をViewにバインドし、UIを更新する。
+     * ここで、リポジトリ情報をViewにバインドし、UIの更新をしている。
      *
      * @param view このFragmentのRoot View
      * @param savedInstanceState このフラグメントの以前の保存状態を含むBundle、再作成時にのみ非nullとなる
