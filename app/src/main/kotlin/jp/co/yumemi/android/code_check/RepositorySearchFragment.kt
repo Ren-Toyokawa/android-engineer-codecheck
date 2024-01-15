@@ -51,14 +51,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
         val dividerItemDecoration =
             DividerItemDecoration(context!!, layoutManager.orientation)
 
-        val adapter =
-            RepositoryInfoAdapter(
-                object : RepositoryInfoAdapter.OnItemClickListener {
-                    override fun itemClick(repositoryInfoItem: RepositoryInfoItem) {
-                        navigateRepositoryInfoFragment(repositoryInfoItem)
-                    }
-                },
-            )
+        val adapter = RepositoryInfoAdapter { navigateRepositoryInfoFragment(it) }
 
         binding.searchInputText
             .setOnEditorActionListener { editText, action, _ ->
@@ -96,12 +89,22 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
     }
 }
 
+/**
+ * リポジトリ情報をRecyclerViewに表示するためのアダプター
+ */
+class RepositoryInfoAdapter(
+    private val itemClickListener: (RepositoryInfoItem) -> Unit
+) : ListAdapter<RepositoryInfoItem, RepositoryInfoAdapter.ViewHolder>(DiffCallback) {
+    // region inner class, objectの定義
+    class ViewHolder(val binding: LayoutItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-// RecyclerViewのアイテムの差分を計算し、 必要なアップデートのみを行うようにするためのCallback
-val diffUtil =
-    object : DiffUtil.ItemCallback<RepositoryInfoItem>() {
+    /**
+     * RecyclerViewのアイテムの差分を計算し、 必要なアップデートのみを行うようにするためのCallback
+     */
+    object DiffCallback : DiffUtil.ItemCallback<RepositoryInfoItem>() {
         /**
          * 名前を比較し、二つのアイテムが同一のアイテムを表しているかどうかを判断する
+         *
          * @param oldItem 古いリポジトリ情報
          * @param newItem 新しいリポジトリ情報
          */
@@ -114,6 +117,7 @@ val diffUtil =
 
         /**
          * 二つのアイテムのデータ内容が等しいかどうかを判断する
+         *
          * @param oldItem 古いリポジトリ情報
          * @param newItem 新しいリポジトリ情報
          */
@@ -125,19 +129,9 @@ val diffUtil =
         }
     }
 
-/**
- * リポジトリ情報をRecyclerViewに表示するためのアダプター
- */
-class RepositoryInfoAdapter(
-    private val itemClickListener: OnItemClickListener,
-) : ListAdapter<RepositoryInfoItem, RepositoryInfoAdapter.ViewHolder>(diffUtil) {
-    class ViewHolder(val binding: LayoutItemBinding) : RecyclerView.ViewHolder(binding.root)
+    // endregion
 
-
-    interface OnItemClickListener {
-        fun itemClick(repositoryInfoItem: RepositoryInfoItem)
-    }
-
+    // region override methods
     /**
      * ViewHolderが生成された際に呼び出される
      *
@@ -163,7 +157,8 @@ class RepositoryInfoAdapter(
         val item = getItem(position)
         holder.binding.repositoryNameView.text = item.name
         holder.itemView.setOnClickListener {
-            itemClickListener.itemClick(item)
+            itemClickListener(item)
         }
     }
+    // endregion
 }
