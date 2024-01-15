@@ -26,14 +26,14 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
         binding = FragmentRepositoryInfoBinding.bind(view)
 
-        val item = args.repositoryInfo
+        val repositoryInfo = args.repositoryInfo
 
-        _binding.ownerIconView.load(item.ownerIconUrl);
-        _binding.nameView.text = item.name;
-        _binding.languageView.text = item.language;
-        _binding.starsView.text = "${item.stargazersCount} stars";
-        _binding.watchersView.text = "${item.watchersCount} watchers";
-        _binding.forksView.text = "${item.forksCount} forks";
-        _binding.openIssuesView.text = "${item.openIssuesCount} open issues";
+        _binding.ownerIconView.load(repositoryInfo.ownerIconUrl);
+        _binding.nameView.text = repositoryInfo.name;
+        _binding.languageView.text = repositoryInfo.language;
+        _binding.starsView.text = "${repositoryInfo.stargazersCount} stars";
+        _binding.watchersView.text = "${repositoryInfo.watchersCount} watchers";
+        _binding.forksView.text = "${repositoryInfo.forksCount} forks";
+        _binding.openIssuesView.text = "${repositoryInfo.openIssuesCount} open issues";
     }
 }
