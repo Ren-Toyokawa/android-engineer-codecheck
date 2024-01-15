@@ -24,8 +24,8 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "検索した日時: $lastSearchDate")
 
+        Log.d(TAG, "検索した日時: $lastSearchDate")
 
         binding = FragmentRepositoryInfoBinding.bind(view)
 
