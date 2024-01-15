@@ -79,10 +79,11 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
      * @param repositoryInfoItem ユーザーによって選択されたリポジトリの情報
      */
     private fun navigateRepositoryInfoFragment(repositoryInfoItem: RepositoryInfoItem) {
-        val action = RepositorySearchFragmentDirections
-            .actionRepositorySearchFragmentToRepositoryInfoFragment(
-                repositoryInfoItem = repositoryInfoItem,
-            )
+        val action =
+            RepositorySearchFragmentDirections
+                .actionRepositorySearchFragmentToRepositoryInfoFragment(
+                    repositoryInfoItem = repositoryInfoItem,
+                )
 
         findNavController().navigate(action)
     }
@@ -92,7 +93,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
  * リポジトリ情報をRecyclerViewに表示するためのアダプター
  */
 class RepositoryInfoAdapter(
-    private val itemClickListener: (RepositoryInfoItem) -> Unit
+    private val itemClickListener: (RepositoryInfoItem) -> Unit,
 ) : ListAdapter<RepositoryInfoItem, RepositoryInfoAdapter.ViewHolder>(DiffCallback) {
     // region inner class, objectの定義
     class ViewHolder(val binding: LayoutItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -131,18 +132,23 @@ class RepositoryInfoAdapter(
     // endregion
 
     // region override methods
+
     /**
      * ViewHolderが生成された際に呼び出される
      *
      * @param parent 親のView
      * @param viewType Viewの種別, ここでは1つしかないので未使用
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = LayoutItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder {
+        val binding =
+            LayoutItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
         return ViewHolder(binding)
     }
 
@@ -152,7 +158,10 @@ class RepositoryInfoAdapter(
      * @param holder ViewHolder
      * @param position リストの位置
      */
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         val item = getItem(position)
         holder.binding.repositoryNameView.text = item.name
         holder.itemView.setOnClickListener {

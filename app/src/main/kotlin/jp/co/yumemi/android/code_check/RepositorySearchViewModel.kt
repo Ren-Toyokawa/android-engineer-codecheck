@@ -50,7 +50,7 @@ class RepositorySearchViewModel(
 
                 val repositoryInfoItemList = mutableListOf<RepositoryInfoItem>()
 
-                 // アイテムの個数分ループし、JsonをパースしてRepositoryInfoのリストを作成する
+                // アイテムの個数分ループし、JsonをパースしてRepositoryInfoのリストを作成する
                 for (i in 0 until jsonItems.length()) {
                     val jsonItem = jsonItems.optJSONObject(i)!!
                     val name = jsonItem.optString("full_name")
