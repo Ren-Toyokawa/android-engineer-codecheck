@@ -13,6 +13,9 @@ import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryInfoBinding
 
 class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
+    companion object {
+        private const val TAG = "RepositoryInfoFragment"
+    }
 
     private val args: RepositoryInfoFragmentArgs by navArgs()
 
@@ -21,8 +24,8 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "検索した日時: $lastSearchDate")
 
-        Log.d("検索した日時", lastSearchDate.toString())
 
         binding = FragmentRepositoryInfoBinding.bind(view)
 
