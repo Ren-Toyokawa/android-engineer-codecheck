@@ -51,8 +51,8 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
             DividerItemDecoration(context!!, layoutManager.orientation)
 
         val adapter =
-            CustomAdapter(
-                object : CustomAdapter.OnItemClickListener {
+            RepositoryInfoAdapter(
+                object : RepositoryInfoAdapter.OnItemClickListener {
                     override fun itemClick(repositoryInfoItem: RepositoryInfoItem) {
                         navigateRepositoryInfoFragment(repositoryInfoItem)
                     }
@@ -125,13 +125,11 @@ val diffUtil =
     }
 
 /**
- * FIXME: クラス名が抽象的なため、適切な名前に変更する
- *
  * リポジトリ情報をRecyclerViewに表示するためのアダプター
  */
-class CustomAdapter(
+class RepositoryInfoAdapter(
     private val itemClickListener: OnItemClickListener,
-) : ListAdapter<RepositoryInfoItem, CustomAdapter.ViewHolder>(diffUtil) {
+) : ListAdapter<RepositoryInfoItem, RepositoryInfoAdapter.ViewHolder>(diffUtil) {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     interface OnItemClickListener {
