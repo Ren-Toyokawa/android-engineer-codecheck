@@ -62,10 +62,10 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
             } else {
                 getString(R.string.language_not_specified)
             }
-            starsView.text = "${repositoryInfo.stargazersCount} stars"
-            watchersView.text = "${repositoryInfo.watchersCount} watchers"
-            forksView.text = "${repositoryInfo.forksCount} forks"
-            openIssuesView.text = "${repositoryInfo.openIssuesCount} open issues"
+            starsView.text = getString(R.string.star_count_text, repositoryInfo.stargazersCount)
+            watchersView.text = getString(R.string.watcher_count_text, repositoryInfo.watchersCount)
+            forksView.text = getString(R.string.fork_count_text, repositoryInfo.forksCount)
+            openIssuesView.text = getString(R.string.open_issue_count_text, repositoryInfo.openIssuesCount)
         }
     }
 }
