@@ -116,6 +116,9 @@ data class RepositoryInfoItem(
     val openIssuesCount: Long,
 ) : Parcelable
 
+/**
+ * エラーの状態を表すsealed interface
+ */
 sealed interface ErrorState {
     object Idle : ErrorState
     object CantFetchRepositoryInfo : ErrorState
