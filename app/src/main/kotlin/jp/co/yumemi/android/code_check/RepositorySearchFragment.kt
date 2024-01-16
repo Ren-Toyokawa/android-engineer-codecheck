@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
 import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * リポジトリ検索画面
@@ -62,14 +63,18 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
                     editText.text.toString().let {
                         // IMEの検索ボタンが押されたときに、Githubのレポジトリを検索
                         // 結果をAdapterにセットする
-                        viewModel.searchRepository(it).apply {
-                            adapter.submitList(this)
-                        }
+                        viewModel.searchRepository(it)
                     }
                     return@setOnEditorActionListener true
                 }
                 return@setOnEditorActionListener false
             }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.searchResults.collectLatest {
+                adapter.submitList(it)
+            }
+        }
 
         binding.recyclerView.also {
             it.layoutManager = layoutManager
