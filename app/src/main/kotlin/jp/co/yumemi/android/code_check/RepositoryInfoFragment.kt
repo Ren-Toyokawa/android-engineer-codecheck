@@ -24,6 +24,14 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
     private var binding: FragmentRepositoryInfoBinding? = null
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // ViewBindingのインスタンスを破棄する
+        // FragmentのインスタンスはonDestroyView以降も破棄されない
+        // そのため、ここでViewBindingのインスタンスを破棄する必要がある
+        binding = null
+    }
+
     /**
      * FragmentのViewが生成された後に呼び出される。
      * ここで、リポジトリ情報をViewにバインドし、UIの更新をしている。
@@ -49,7 +57,11 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
                 error(R.drawable.ic_android)
             }
             nameView.text = repositoryInfo.name
-            languageView.text = repositoryInfo.language
+            languageView.text = if (repositoryInfo.language !== null){
+                getString(R.string.written_language, repositoryInfo.language)
+            } else {
+                getString(R.string.language_not_specified)
+            }
             starsView.text = "${repositoryInfo.stargazersCount} stars"
             watchersView.text = "${repositoryInfo.watchersCount} watchers"
             forksView.text = "${repositoryInfo.forksCount} forks"
