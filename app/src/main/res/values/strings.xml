@@ -4,4 +4,8 @@
     <string name="repository_info">レポジトリ情報</string>
     <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
     <string name="written_language">Written in %s</string>
+
+    <string name="error_dialog_title">レポジトリ情報の取得に失敗しました</string>
+    ¥<string name="error_dialog_message">時間をおいて再度実行するか、アプリを最新にアップデートしてください。\n解消されない場合はお手数ですが開発者へお問い合わせください</string>
+    <string name="error_dialog_positive_button">OK</string>
 </resources>

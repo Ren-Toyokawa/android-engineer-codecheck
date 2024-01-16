@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -43,12 +45,14 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
         val binding = FragmentRepositorySearchBinding.bind(view)
 
-        val viewModel = RepositorySearchViewModel(context!!)
+        val context = requireContext()
 
-        val layoutManager = LinearLayoutManager(context!!)
+        val viewModel = RepositorySearchViewModel(context)
+
+        val layoutManager = LinearLayoutManager(context)
 
         val dividerItemDecoration =
-            DividerItemDecoration(context!!, layoutManager.orientation)
+            DividerItemDecoration(context, layoutManager.orientation)
 
         val adapter = RepositoryInfoAdapter { navigateRepositoryInfoFragment(it) }
 
@@ -71,6 +75,26 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
             it.layoutManager = layoutManager
             it.addItemDecoration(dividerItemDecoration)
             it.adapter = adapter
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.errorState.collect {
+                when (it) {
+                    ErrorState.Idle -> {
+                        // 何もしない
+                    }
+                    ErrorState.CantFetchRepositoryInfo -> {
+                        // alert dialogを表示する
+                        AlertDialog.Builder(context)
+                            .setTitle(R.string.error_dialog_title)
+                            .setMessage(R.string.error_dialog_message)
+                            .setPositiveButton(R.string.error_dialog_positive_button) { _, _ ->
+                                viewModel.clearErrorState()
+                            }
+                            .show()
+                    }
+                }
+            }
         }
     }
 
