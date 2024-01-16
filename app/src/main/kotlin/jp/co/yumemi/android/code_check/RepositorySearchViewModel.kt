@@ -80,7 +80,6 @@ class RepositorySearchViewModel: ViewModel() {
                             RepositoryInfoItem(
                                 name = name,
                                 ownerIconUrl = ownerIconUrl ?: "",
-                                // FIXME: ここでcontextから文字列を生成するべきではないため、Fragmentでするように修正する必要がある
                                 language = language,
                                 stargazersCount = stargazersCount,
                                 watchersCount = watchersCount,
