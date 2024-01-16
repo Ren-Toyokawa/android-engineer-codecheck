@@ -52,7 +52,7 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
         val repositoryInfo = args.repositoryInfoItem
 
         binding?.apply {
-            ownerIconView.load(repositoryInfo.ownerIconUrl) {
+            ownerIconView.load(repositoryInfo.owner.avatarUrl) {
                 placeholder(R.drawable.ic_android)
                 error(R.drawable.ic_android)
             }

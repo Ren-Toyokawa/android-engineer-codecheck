@@ -10,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
 import io.ktor.client.engine.android.Android
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
@@ -19,6 +21,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import okio.IOException
 import org.json.JSONObject
 import java.util.Date
 
@@ -30,7 +36,15 @@ class RepositorySearchViewModel : ViewModel() {
         private const val TAG = "RepositorySearchViewModel"
     }
 
-    private val client = HttpClient(Android)
+    private val client = HttpClient(Android) {
+        install(JsonFeature){
+            serializer = KotlinxSerializer(
+                json = kotlinx.serialization.json.Json {
+                    ignoreUnknownKeys = true
+                }
+            )
+        }
+    }
 
     private val _errorState: MutableStateFlow<ErrorState> = MutableStateFlow(ErrorState.Idle)
     val errorState = _errorState.asStateFlow()
@@ -57,55 +71,17 @@ class RepositorySearchViewModel : ViewModel() {
      */
     fun searchRepository(inputText: String) {
         viewModelScope.launch {
-            val response: HttpResponse =
-                client.get("https://api.github.com/search/repositories") {
-                    header("Accept", "application/vnd.github.v3+json")
-                    parameter("q", inputText)
-                }
-
-            val jsonBody = JSONObject(response.receive<String>())
-
-            val jsonItems = jsonBody.optJSONArray("items")
-
-            if (jsonItems == null) {
+            try {
+                val response: RepositorySearchResponse =
+                    client.get("https://api.github.com/search/repositories") {
+                        header("Accept", "application/vnd.github.v3+json")
+                        parameter("q", inputText)
+                    }
+                _searchResults.value = response.items
+            } catch (e: SerializationException) {
+                Log.e(TAG, "error: $e")
                 _errorState.value = ErrorState.CantFetchRepositoryInfo
-                Log.d(TAG, "jsonItems is null, inputText: $inputText")
-                return@launch
             }
-
-            val repositoryInfoItemList = mutableListOf<RepositoryInfoItem>()
-
-            // アイテムの個数分ループし、JsonをパースしてRepositoryInfoのリストを作成する
-            for (i in 0 until jsonItems.length()) {
-                try {
-                    val jsonItem = jsonItems.getJSONObject(i)
-                    val name = jsonItem.getString("full_name")
-                    val ownerIconUrl = jsonItem.getJSONObject("owner").optString("avatar_url")
-                    val language = jsonItem.optString("language") ?: null
-                    val stargazersCount = jsonItem.getLong("stargazers_count")
-                    val watchersCount = jsonItem.getLong("watchers_count")
-                    val forksCount = jsonItem.getLong("forks_count")
-                    val openIssuesCount = jsonItem.getLong("open_issues_count")
-
-                    val repositoryInfoItem =
-                        RepositoryInfoItem(
-                            name = name,
-                            ownerIconUrl = ownerIconUrl ?: "",
-                            language = language,
-                            stargazersCount = stargazersCount,
-                            watchersCount = watchersCount,
-                            forksCount = forksCount,
-                            openIssuesCount = openIssuesCount,
-                        )
-
-                    repositoryInfoItemList.add(repositoryInfoItem)
-                } catch (e: Exception) {
-                    Log.e(TAG, "error: $e")
-                    _errorState.value = ErrorState.CantFetchRepositoryInfo
-                }
-            }
-
-            _searchResults.value = repositoryInfoItemList
 
             lastSearchDate = Date()
         }
@@ -116,20 +92,43 @@ class RepositorySearchViewModel : ViewModel() {
     }
 }
 
+
+@Parcelize
+@Serializable
+data class RepositorySearchResponse(
+    val items: List<RepositoryInfoItem>
+) : Parcelable
+
+
 /**
  * Githubのリポジトリ情報
  */
 @Parcelize
+@Serializable
 data class RepositoryInfoItem(
+    @SerialName("full_name")
     val name: String,
-    val ownerIconUrl: String,
+    @SerialName("owner")
+    val owner: Owner,
+    @SerialName("language")
     val language: String?,
+    @SerialName("stargazers_count")
     val stargazersCount: Long,
+    @SerialName("watchers_count")
     val watchersCount: Long,
+    @SerialName("forks_count")
     val forksCount: Long,
+    @SerialName("open_issues_count")
     val openIssuesCount: Long,
 ) : Parcelable
 
+
+@Parcelize
+@Serializable
+data class Owner(
+    @SerialName("avatar_url")
+    val avatarUrl: String,
+) : Parcelable
 /**
  * エラーの状態を表すsealed interface
  */
