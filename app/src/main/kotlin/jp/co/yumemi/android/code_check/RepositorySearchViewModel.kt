@@ -3,7 +3,6 @@
  */
 package jp.co.yumemi.android.code_check
 
-import android.content.Context
 import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -16,12 +15,9 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
 import java.util.Date
@@ -34,12 +30,24 @@ class RepositorySearchViewModel : ViewModel() {
         private const val TAG = "RepositorySearchViewModel"
     }
 
+    private val client = HttpClient(Android)
+
     private val _errorState: MutableStateFlow<ErrorState> = MutableStateFlow(ErrorState.Idle)
     val errorState = _errorState.asStateFlow()
 
     // StateFlowを使用して検索結果を保持
     private val _searchResults = MutableStateFlow<List<RepositoryInfoItem>>(emptyList())
     val searchResults = _searchResults.asStateFlow()
+
+    // region life cycle event
+    override fun onCleared() {
+        super.onCleared()
+        // HACK: 現状は一つのViewModelしか存在しないため、ここでclientをcloseしている
+        //       複数の画面で呼び出される場合はシングルトンにした方が良いため、必要に応じて修正する
+        client.close()
+    }
+    // endregion
+
 
     /**
      * inputTextを元にリポジトリを検索する
@@ -48,8 +56,6 @@ class RepositorySearchViewModel : ViewModel() {
      * @return リポジトリ情報のリスト
      */
     fun searchRepository(inputText: String) {
-        val client = HttpClient(Android)
-
         viewModelScope.launch {
             val response: HttpResponse =
                 client.get("https://api.github.com/search/repositories") {
