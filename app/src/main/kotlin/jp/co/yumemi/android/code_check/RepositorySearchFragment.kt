@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
 import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * リポジトリ検索画面
@@ -47,7 +48,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
         val context = requireContext()
 
-        val viewModel = RepositorySearchViewModel(context)
+        val viewModel = RepositorySearchViewModel()
 
         val layoutManager = LinearLayoutManager(context)
 
@@ -62,14 +63,18 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
                     editText.text.toString().let {
                         // IMEの検索ボタンが押されたときに、Githubのレポジトリを検索
                         // 結果をAdapterにセットする
-                        viewModel.searchRepository(it).apply {
-                            adapter.submitList(this)
-                        }
+                        viewModel.searchRepository(it)
                     }
                     return@setOnEditorActionListener true
                 }
                 return@setOnEditorActionListener false
             }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.searchResults.collectLatest {
+                adapter.submitList(it)
+            }
+        }
 
         binding.recyclerView.also {
             it.layoutManager = layoutManager
@@ -84,11 +89,20 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
                         // 何もしない
                     }
                     ErrorState.CantFetchRepositoryInfo -> {
-                        // alert dialogを表示する
                         AlertDialog.Builder(context)
                             .setTitle(R.string.error_dialog_title)
                             .setMessage(R.string.error_dialog_message)
                             .setPositiveButton(R.string.error_dialog_positive_button) { _, _ ->
+                                viewModel.clearErrorState()
+                            }
+                            .show()
+                    }
+
+                    ErrorState.NetworkError -> {
+                        AlertDialog.Builder(context)
+                            .setTitle(R.string.network_error_dialog_title)
+                            .setMessage(R.string.network_error_dialog_message)
+                            .setPositiveButton(R.string.network_error_dialog_positive_button) { _, _ ->
                                 viewModel.clearErrorState()
                             }
                             .show()
