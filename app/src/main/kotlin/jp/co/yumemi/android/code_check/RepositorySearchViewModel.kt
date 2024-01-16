@@ -68,17 +68,17 @@ class RepositorySearchViewModel(
 
                 // アイテムの個数分ループし、JsonをパースしてRepositoryInfoのリストを作成する
                 for (i in 0 until jsonItems.length()) {
-                    val jsonItem = jsonItems.optJSONObject(i)
-                    val name = jsonItem.optString("full_name")
-                    val ownerIconUrl = jsonItem.optJSONObject("owner")?.optString("avatar_url")
-                    val language = jsonItem.optString("language")
-                    val stargazersCount = jsonItem.optLong("stargazers_count")
-                    val watchersCount = jsonItem.optLong("watchers_count")
-                    val forksCount = jsonItem.optLong("forks_count")
-                    val openIssuesCount = jsonItem.optLong("open_issues_count")
+                    try {
+                        val jsonItem = jsonItems.getJSONObject(i)
+                        val name = jsonItem.getString("full_name")
+                        val ownerIconUrl = jsonItem.getJSONObject("owner").optString("avatar_url")
+                        val language = jsonItem.optString("language") ?: null
+                        val stargazersCount = jsonItem.getLong("stargazers_count")
+                        val watchersCount = jsonItem.getLong("watchers_count")
+                        val forksCount = jsonItem.getLong("forks_count")
+                        val openIssuesCount = jsonItem.getLong("open_issues_count")
 
-                    repositoryInfoItemList.add(
-                        RepositoryInfoItem(
+                        val repositoryInfoItem = RepositoryInfoItem(
                             name = name,
                             ownerIconUrl = ownerIconUrl ?: "",
                             // FIXME: ここでcontextから文字列を生成するべきではないため、Fragmentでするように修正する必要がある
@@ -87,8 +87,13 @@ class RepositorySearchViewModel(
                             watchersCount = watchersCount,
                             forksCount = forksCount,
                             openIssuesCount = openIssuesCount,
-                        ),
-                    )
+                        )
+
+                        repositoryInfoItemList.add(repositoryInfoItem)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "error: $e")
+                        _errorState.value = ErrorState.CantFetchRepositoryInfo
+                    }
                 }
 
                 lastSearchDate = Date()
@@ -109,7 +114,7 @@ class RepositorySearchViewModel(
 data class RepositoryInfoItem(
     val name: String,
     val ownerIconUrl: String,
-    val language: String,
+    val language: String?,
     val stargazersCount: Long,
     val watchersCount: Long,
     val forksCount: Long,
