@@ -117,9 +117,18 @@ data class Owner(
  * エラーの状態を表すsealed interface
  */
 sealed interface ErrorState {
+    /**
+     * 何もしていない状態
+     */
     object Idle : ErrorState
 
+    /**
+     * リポジトリ情報の取得に失敗した場合
+     */
     object CantFetchRepositoryInfo : ErrorState
 
+    /**
+     * ネットワークエラーが発生した場合
+     */
     object NetworkError : ErrorState
 }
