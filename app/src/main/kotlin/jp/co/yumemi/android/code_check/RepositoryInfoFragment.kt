@@ -24,6 +24,14 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
     private var binding: FragmentRepositoryInfoBinding? = null
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // ViewBindingのインスタンスを破棄する
+        // FragmentのインスタンスはonDestroyView以降も破棄されない
+        // そのため、ここでViewBindingのインスタンスを破棄する必要がある
+        binding = null
+    }
+
     /**
      * FragmentのViewが生成された後に呼び出される。
      * ここで、リポジトリ情報をViewにバインドし、UIの更新をしている。
