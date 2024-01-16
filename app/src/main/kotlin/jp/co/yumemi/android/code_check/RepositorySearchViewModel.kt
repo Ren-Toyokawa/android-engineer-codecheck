@@ -27,9 +27,7 @@ import java.util.Date
 /**
  * リポジトリ検索画面のViewModel
  */
-class RepositorySearchViewModel(
-    val context: Context,
-) : ViewModel() {
+class RepositorySearchViewModel: ViewModel() {
     companion object {
         private const val TAG = "RepositorySearchViewModel"
     }
@@ -83,7 +81,7 @@ class RepositorySearchViewModel(
                                 name = name,
                                 ownerIconUrl = ownerIconUrl ?: "",
                                 // FIXME: ここでcontextから文字列を生成するべきではないため、Fragmentでするように修正する必要がある
-                                language = context.getString(R.string.written_language, language),
+                                language = language,
                                 stargazersCount = stargazersCount,
                                 watchersCount = watchersCount,
                                 forksCount = forksCount,

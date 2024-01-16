@@ -47,7 +47,7 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
         val context = requireContext()
 
-        val viewModel = RepositorySearchViewModel(context)
+        val viewModel = RepositorySearchViewModel()
 
         val layoutManager = LinearLayoutManager(context)
 

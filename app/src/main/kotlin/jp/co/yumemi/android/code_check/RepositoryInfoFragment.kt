@@ -49,7 +49,11 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
                 error(R.drawable.ic_android)
             }
             nameView.text = repositoryInfo.name
-            languageView.text = repositoryInfo.language
+            languageView.text = if (repositoryInfo.language !== null){
+                getString(R.string.written_language, repositoryInfo.language)
+            } else {
+                getString(R.string.language_not_specified)
+            }
             starsView.text = "${repositoryInfo.stargazersCount} stars"
             watchersView.text = "${repositoryInfo.watchersCount} watchers"
             forksView.text = "${repositoryInfo.forksCount} forks"
