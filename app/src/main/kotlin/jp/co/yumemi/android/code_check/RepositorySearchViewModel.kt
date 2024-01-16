@@ -78,16 +78,17 @@ class RepositorySearchViewModel(
                         val forksCount = jsonItem.getLong("forks_count")
                         val openIssuesCount = jsonItem.getLong("open_issues_count")
 
-                        val repositoryInfoItem = RepositoryInfoItem(
-                            name = name,
-                            ownerIconUrl = ownerIconUrl ?: "",
-                            // FIXME: ここでcontextから文字列を生成するべきではないため、Fragmentでするように修正する必要がある
-                            language = context.getString(R.string.written_language, language),
-                            stargazersCount = stargazersCount,
-                            watchersCount = watchersCount,
-                            forksCount = forksCount,
-                            openIssuesCount = openIssuesCount,
-                        )
+                        val repositoryInfoItem =
+                            RepositoryInfoItem(
+                                name = name,
+                                ownerIconUrl = ownerIconUrl ?: "",
+                                // FIXME: ここでcontextから文字列を生成するべきではないため、Fragmentでするように修正する必要がある
+                                language = context.getString(R.string.written_language, language),
+                                stargazersCount = stargazersCount,
+                                watchersCount = watchersCount,
+                                forksCount = forksCount,
+                                openIssuesCount = openIssuesCount,
+                            )
 
                         repositoryInfoItemList.add(repositoryInfoItem)
                     } catch (e: Exception) {
@@ -126,5 +127,6 @@ data class RepositoryInfoItem(
  */
 sealed interface ErrorState {
     object Idle : ErrorState
+
     object CantFetchRepositoryInfo : ErrorState
 }
