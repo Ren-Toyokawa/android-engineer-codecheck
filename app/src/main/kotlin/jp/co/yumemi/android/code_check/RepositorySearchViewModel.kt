@@ -81,6 +81,9 @@ class RepositorySearchViewModel : ViewModel() {
             } catch (e: SerializationException) {
                 Log.e(TAG, "error: $e")
                 _errorState.value = ErrorState.CantFetchRepositoryInfo
+            } catch (e: IOException) {
+                Log.e(TAG, "error: $e")
+                _errorState.value = ErrorState.NetworkError
             }
 
             lastSearchDate = Date()
@@ -136,4 +139,6 @@ sealed interface ErrorState {
     object Idle : ErrorState
 
     object CantFetchRepositoryInfo : ErrorState
+
+    object NetworkError : ErrorState
 }

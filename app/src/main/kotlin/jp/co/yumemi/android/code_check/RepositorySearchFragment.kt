@@ -89,11 +89,20 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
                         // 何もしない
                     }
                     ErrorState.CantFetchRepositoryInfo -> {
-                        // alert dialogを表示する
                         AlertDialog.Builder(context)
                             .setTitle(R.string.error_dialog_title)
                             .setMessage(R.string.error_dialog_message)
                             .setPositiveButton(R.string.error_dialog_positive_button) { _, _ ->
+                                viewModel.clearErrorState()
+                            }
+                            .show()
+                    }
+
+                    ErrorState.NetworkError -> {
+                        AlertDialog.Builder(context)
+                            .setTitle(R.string.network_error_dialog_title)
+                            .setMessage(R.string.network_error_dialog_message)
+                            .setPositiveButton(R.string.network_error_dialog_positive_button) { _, _ ->
                                 viewModel.clearErrorState()
                             }
                             .show()
