@@ -6,10 +6,12 @@ package jp.co.yumemi.android.code_check
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepository
 import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepositoryImpl
 import jp.co.yumemi.android.code_check.core.data.model.GithubRepository
 import jp.co.yumemi.android.code_check.core.data.model.RepositorySearchResponse
@@ -21,17 +23,18 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.SerializationException
 import java.net.UnknownHostException
 import java.util.Date
+import javax.inject.Inject
 
 /**
  * リポジトリ検索画面のViewModel
  */
-class RepositorySearchViewModel : ViewModel() {
+@HiltViewModel
+class RepositorySearchViewModel @Inject constructor(
+    private val githubRepositoryRepository: GithubRepositoryRepository
+): ViewModel() {
     companion object {
         private const val TAG = "RepositorySearchViewModel"
     }
-
-    // FIXME: 本当はHiltでDIしたい
-    private val githubRepositoryRepository = GithubRepositoryRepositoryImpl()
 
     private val _errorState: MutableStateFlow<ErrorState> = MutableStateFlow(ErrorState.Idle)
     val errorState = _errorState.asStateFlow()
@@ -64,18 +67,6 @@ class RepositorySearchViewModel : ViewModel() {
      */
     fun clearErrorState() {
         _errorState.value = ErrorState.Idle
-    }
-
-    /**
-     * FIXME: 本来はRepositoryクラスを作成し、そこでAPIのリクエストを行うべき
-     *        アーキテクチャ適用のissueで対応する
-     * GithubのAPIにRequestしてリポジトリ情報を取得する
-     */
-    private suspend fun searchRepository(inputText: String): RepositorySearchResponse {
-        return client.get("https://api.github.com/search/repositories") {
-            header("Accept", "application/vnd.github.v3+json")
-            parameter("q", inputText)
-        }
     }
 
     /**
