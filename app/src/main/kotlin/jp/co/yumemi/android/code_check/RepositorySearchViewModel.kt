@@ -70,18 +70,6 @@ class RepositorySearchViewModel @Inject constructor(
     }
 
     /**
-     * FIXME: 本来はRepositoryクラスを作成し、そこでAPIのリクエストを行うべき
-     *        アーキテクチャ適用のissueで対応する
-     * GithubのAPIにRequestしてリポジトリ情報を取得する
-     */
-    private suspend fun searchRepository(inputText: String): RepositorySearchResponse {
-        return client.get("https://api.github.com/search/repositories") {
-            header("Accept", "application/vnd.github.v3+json")
-            parameter("q", inputText)
-        }
-    }
-
-    /**
      * エラーをハンドリングする
      */
     private fun handleError(e: Exception) {
