@@ -1,6 +1,5 @@
 package jp.co.yumemi.android.code_check.core.data
 
-import io.ktor.client.request.get
 import jp.co.yumemi.android.code_check.core.api.github.GithubSearchApi
 import jp.co.yumemi.android.code_check.core.data.model.RepositorySearchResponse
 import jp.co.yumemi.android.code_check.core.data.model.toExternalModel
