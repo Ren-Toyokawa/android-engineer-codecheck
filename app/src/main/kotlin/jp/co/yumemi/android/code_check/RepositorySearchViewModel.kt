@@ -10,8 +10,10 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepositoryImpl
 import jp.co.yumemi.android.code_check.core.data.model.GithubRepository
 import jp.co.yumemi.android.code_check.core.data.model.RepositorySearchResponse
+import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.network.HttpClientSingleton.client
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,11 +30,14 @@ class RepositorySearchViewModel : ViewModel() {
         private const val TAG = "RepositorySearchViewModel"
     }
 
+    // FIXME: 本当はHiltでDIしたい
+    private val githubRepositoryRepository = GithubRepositoryRepositoryImpl()
+
     private val _errorState: MutableStateFlow<ErrorState> = MutableStateFlow(ErrorState.Idle)
     val errorState = _errorState.asStateFlow()
 
     // StateFlowを使用して検索結果を保持
-    private val _searchResults = MutableStateFlow<List<GithubRepository>>(emptyList())
+    private val _searchResults = MutableStateFlow<List<GithubRepositorySummary>>(emptyList())
     val searchResults = _searchResults.asStateFlow()
 
     /**
@@ -44,8 +49,8 @@ class RepositorySearchViewModel : ViewModel() {
     fun executeSearchRepository(inputText: String) {
         viewModelScope.launch {
             try {
-                val response: RepositorySearchResponse = searchRepository(inputText)
-                _searchResults.value = response.items
+                val searchResults = githubRepositoryRepository.searchRepository(inputText)
+                _searchResults.value = searchResults
             } catch (e: Exception) {
                 handleError(e)
             }

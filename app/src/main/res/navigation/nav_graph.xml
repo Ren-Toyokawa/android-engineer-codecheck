@@ -21,8 +21,8 @@
         android:label="@string/repository_info"
         tools:layout="@layout/fragment_repository_info">
         <argument
-            android:name="githubRepository"
-            app:argType="jp.co.yumemi.android.code_check.core.data.model.GithubRepository" />
+            android:name="githubRepositorySummary"
+            app:argType="jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary" />
     </fragment>
 
 </navigation>
