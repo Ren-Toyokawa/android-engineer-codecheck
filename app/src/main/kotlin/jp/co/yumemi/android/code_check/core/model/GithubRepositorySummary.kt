@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 
 /**
- * Githubのリポジトリ情報
+ * Githubのリポジトリ概要
  */
 @Parcelize
 data class GithubRepositorySummary(
