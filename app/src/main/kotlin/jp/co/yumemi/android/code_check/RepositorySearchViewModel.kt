@@ -3,7 +3,6 @@
  */
 package jp.co.yumemi.android.code_check
 
-import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,13 +10,14 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepositoryImpl
+import jp.co.yumemi.android.code_check.core.data.model.GithubRepository
+import jp.co.yumemi.android.code_check.core.data.model.RepositorySearchResponse
+import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.network.HttpClientSingleton.client
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import java.net.UnknownHostException
 import java.util.Date
@@ -30,11 +30,14 @@ class RepositorySearchViewModel : ViewModel() {
         private const val TAG = "RepositorySearchViewModel"
     }
 
+    // FIXME: 本当はHiltでDIしたい
+    private val githubRepositoryRepository = GithubRepositoryRepositoryImpl()
+
     private val _errorState: MutableStateFlow<ErrorState> = MutableStateFlow(ErrorState.Idle)
     val errorState = _errorState.asStateFlow()
 
     // StateFlowを使用して検索結果を保持
-    private val _searchResults = MutableStateFlow<List<RepositoryInfoItem>>(emptyList())
+    private val _searchResults = MutableStateFlow<List<GithubRepositorySummary>>(emptyList())
     val searchResults = _searchResults.asStateFlow()
 
     /**
@@ -46,8 +49,8 @@ class RepositorySearchViewModel : ViewModel() {
     fun executeSearchRepository(inputText: String) {
         viewModelScope.launch {
             try {
-                val response: RepositorySearchResponse = searchRepository(inputText)
-                _searchResults.value = response.items
+                val searchResults = githubRepositoryRepository.searchRepository(inputText)
+                _searchResults.value = searchResults
             } catch (e: Exception) {
                 handleError(e)
             }
@@ -91,43 +94,6 @@ class RepositorySearchViewModel : ViewModel() {
     }
 }
 
-
-@Parcelize
-@Serializable
-data class RepositorySearchResponse(
-    val items: List<RepositoryInfoItem>
-) : Parcelable
-
-
-/**
- * Githubのリポジトリ情報
- */
-@Parcelize
-@Serializable
-data class RepositoryInfoItem(
-    @SerialName("full_name")
-    val name: String,
-    @SerialName("owner")
-    val owner: Owner,
-    @SerialName("language")
-    val language: String?,
-    @SerialName("stargazers_count")
-    val stargazersCount: Long,
-    @SerialName("watchers_count")
-    val watchersCount: Long,
-    @SerialName("forks_count")
-    val forksCount: Long,
-    @SerialName("open_issues_count")
-    val openIssuesCount: Long,
-) : Parcelable
-
-
-@Parcelize
-@Serializable
-data class Owner(
-    @SerialName("avatar_url")
-    val avatarUrl: String,
-) : Parcelable
 /**
  * エラーの状態を表すsealed interface
  */
