@@ -13,43 +13,7 @@ import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
 class RepositoryInfoAdapter(
     private val itemClickListener: (RepositoryInfoItem) -> Unit,
 ) : ListAdapter<RepositoryInfoItem, RepositoryInfoAdapter.ViewHolder>(DiffCallback) {
-    // region inner class, objectの定義
     class ViewHolder(val binding: LayoutItemBinding) : RecyclerView.ViewHolder(binding.root)
-
-    /**
-     * RecyclerViewのアイテムの差分を計算し、 必要なアップデートのみを行うようにするためのCallback
-     */
-    object DiffCallback : DiffUtil.ItemCallback<RepositoryInfoItem>() {
-        /**
-         * 名前を比較し、二つのアイテムが同一のアイテムを表しているかどうかを判断する
-         *
-         * @param oldItem 古いリポジトリ情報
-         * @param newItem 新しいリポジトリ情報
-         */
-        override fun areItemsTheSame(
-            oldItem: RepositoryInfoItem,
-            newItem: RepositoryInfoItem,
-        ): Boolean {
-            return oldItem.name == newItem.name
-        }
-
-        /**
-         * 二つのアイテムのデータ内容が等しいかどうかを判断する
-         *
-         * @param oldItem 古いリポジトリ情報
-         * @param newItem 新しいリポジトリ情報
-         */
-        override fun areContentsTheSame(
-            oldItem: RepositoryInfoItem,
-            newItem: RepositoryInfoItem,
-        ): Boolean {
-            return oldItem == newItem
-        }
-    }
-
-    // endregion
-
-    // region override methods
 
     /**
      * ViewHolderが生成された際に呼び出される
@@ -88,3 +52,36 @@ class RepositoryInfoAdapter(
     }
     // endregion
 }
+
+/**
+ * RecyclerViewのアイテムの差分を計算し、 必要なアップデートのみを行うようにするためのCallback
+ */
+private object DiffCallback : DiffUtil.ItemCallback<RepositoryInfoItem>() {
+    /**
+     * 名前を比較し、二つのアイテムが同一のアイテムを表しているかどうかを判断する
+     *
+     * @param oldItem 古いリポジトリ情報
+     * @param newItem 新しいリポジトリ情報
+     */
+    override fun areItemsTheSame(
+        oldItem: RepositoryInfoItem,
+        newItem: RepositoryInfoItem,
+    ): Boolean {
+        return oldItem.name == newItem.name
+    }
+
+    /**
+     * 二つのアイテムのデータ内容が等しいかどうかを判断する
+     *
+     * @param oldItem 古いリポジトリ情報
+     * @param newItem 新しいリポジトリ情報
+     */
+    override fun areContentsTheSame(
+        oldItem: RepositoryInfoItem,
+        newItem: RepositoryInfoItem,
+    ): Boolean {
+        return oldItem == newItem
+    }
+}
+
+// endregion

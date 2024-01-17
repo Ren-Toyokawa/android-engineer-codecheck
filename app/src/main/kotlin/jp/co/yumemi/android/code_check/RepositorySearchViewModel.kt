@@ -19,7 +19,6 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import okio.IOException
 import java.net.UnknownHostException
 import java.util.Date
 
