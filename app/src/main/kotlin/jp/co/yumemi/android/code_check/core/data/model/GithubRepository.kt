@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Githubのリポジトリ情報
+ * TODO: Parcelableを除去する
  */
 @Parcelize
 @Serializable
