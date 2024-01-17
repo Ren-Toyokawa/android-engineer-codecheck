@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.feature.repository.search
 
 import android.content.Context
 import android.os.Bundle
@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
 import kotlinx.coroutines.flow.launchIn
@@ -62,13 +63,15 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
     private fun setupRecyclerView() {
         val context = requireContext()
         val layoutManager = LinearLayoutManager(context)
-        val dividerItemDecoration = DividerItemDecoration(
-            context,
-            layoutManager.orientation
-        )
-        val adapter = RepositoryInfoAdapter { repositoryInfoItem ->
-            navigateRepositoryInfoFragment(repositoryInfoItem)
-        }
+        val dividerItemDecoration =
+            DividerItemDecoration(
+                context,
+                layoutManager.orientation,
+            )
+        val adapter =
+            RepositoryInfoAdapter { repositoryInfoItem ->
+                navigateRepositoryInfoFragment(repositoryInfoItem)
+            }
 
         binding?.apply {
             recyclerView.layoutManager = layoutManager
@@ -158,10 +161,9 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
      */
     private fun navigateRepositoryInfoFragment(githubRepositorySummary: GithubRepositorySummary) {
         val action =
-            RepositorySearchFragmentDirections
-                .actionRepositorySearchFragmentToRepositoryInfoFragment(
-                    githubRepositorySummary = githubRepositorySummary,
-                )
+            RepositorySearchFragmentDirections.actionRepositorySearchFragmentToRepositoryInfoFragment(
+                githubRepositorySummary = githubRepositorySummary,
+            )
 
         findNavController().navigate(action)
     }
@@ -169,6 +171,5 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-
     }
 }

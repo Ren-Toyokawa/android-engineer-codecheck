@@ -6,7 +6,6 @@ package jp.co.yumemi.android.code_check
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.HttpClient
-import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -15,16 +14,8 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
     @Inject
     lateinit var client: HttpClient
-
-    // FIXME: Jetpack Datastoreなどを使用した方が良い気がする。
-    companion object {
-        // 最後に検索した日時
-        // 検索を実行した際に、この変数に現在時刻を代入する
-        var lastSearchDate: Date? = null
-    }
 
     /**
      * 下記のタイミングで呼び出される

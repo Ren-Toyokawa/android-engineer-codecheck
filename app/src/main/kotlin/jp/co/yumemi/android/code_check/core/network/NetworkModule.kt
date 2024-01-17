@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.network
+package jp.co.yumemi.android.code_check.core.network
 
 import dagger.Module
 import dagger.Provides
@@ -17,11 +17,13 @@ object NetworkModule {
     fun provideHttpClient(): HttpClient {
         return HttpClient(Android) {
             install(JsonFeature) {
-                serializer = KotlinxSerializer(
-                    json = Json {
-                        ignoreUnknownKeys = true
-                    }
-                )
+                serializer =
+                    KotlinxSerializer(
+                        json =
+                            Json {
+                                ignoreUnknownKeys = true
+                            },
+                    )
             }
         }
     }
