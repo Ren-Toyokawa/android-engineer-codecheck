@@ -13,12 +13,8 @@ import jp.co.yumemi.android.code_check.core.data.UserDataRepository
 @InstallIn(SingletonComponent::class)
 interface RepositoryModule {
     @Binds
-    fun bindGithubRepositoryRepository(
-        githubRepositoryRepositoryImpl: GithubRepositoryRepositoryImpl
-    ): GithubRepositoryRepository
+    fun bindGithubRepositoryRepository(githubRepositoryRepositoryImpl: GithubRepositoryRepositoryImpl): GithubRepositoryRepository
 
     @Binds
-    fun bindUserDataRepository(
-        userDataRepository: OfflineUserDataRepository
-    ): UserDataRepository
+    fun bindUserDataRepository(userDataRepository: OfflineUserDataRepository): UserDataRepository
 }
