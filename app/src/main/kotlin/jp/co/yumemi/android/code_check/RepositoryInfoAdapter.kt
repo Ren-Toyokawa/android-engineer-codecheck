@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import jp.co.yumemi.android.code_check.core.data.model.GithubRepository
 import jp.co.yumemi.android.code_check.databinding.LayoutItemBinding
 
 /**
  * リポジトリ情報をRecyclerViewに表示するためのアダプター
  */
 class RepositoryInfoAdapter(
-    private val itemClickListener: (RepositoryInfoItem) -> Unit,
-) : ListAdapter<RepositoryInfoItem, RepositoryInfoAdapter.ViewHolder>(DiffCallback) {
+    private val itemClickListener: (GithubRepository) -> Unit,
+) : ListAdapter<GithubRepository, RepositoryInfoAdapter.ViewHolder>(DiffCallback) {
     class ViewHolder(val binding: LayoutItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     /**
@@ -56,7 +57,7 @@ class RepositoryInfoAdapter(
 /**
  * RecyclerViewのアイテムの差分を計算し、 必要なアップデートのみを行うようにするためのCallback
  */
-private object DiffCallback : DiffUtil.ItemCallback<RepositoryInfoItem>() {
+private object DiffCallback : DiffUtil.ItemCallback<GithubRepository>() {
     /**
      * 名前を比較し、二つのアイテムが同一のアイテムを表しているかどうかを判断する
      *
@@ -64,8 +65,8 @@ private object DiffCallback : DiffUtil.ItemCallback<RepositoryInfoItem>() {
      * @param newItem 新しいリポジトリ情報
      */
     override fun areItemsTheSame(
-        oldItem: RepositoryInfoItem,
-        newItem: RepositoryInfoItem,
+        oldItem: GithubRepository,
+        newItem: GithubRepository,
     ): Boolean {
         return oldItem.name == newItem.name
     }
@@ -77,8 +78,8 @@ private object DiffCallback : DiffUtil.ItemCallback<RepositoryInfoItem>() {
      * @param newItem 新しいリポジトリ情報
      */
     override fun areContentsTheSame(
-        oldItem: RepositoryInfoItem,
-        newItem: RepositoryInfoItem,
+        oldItem: GithubRepository,
+        newItem: GithubRepository,
     ): Boolean {
         return oldItem == newItem
     }

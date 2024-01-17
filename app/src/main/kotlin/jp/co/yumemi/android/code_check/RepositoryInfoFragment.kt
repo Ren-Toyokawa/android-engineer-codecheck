@@ -49,7 +49,7 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
         binding = FragmentRepositoryInfoBinding.bind(view)
 
-        val repositoryInfo = args.repositoryInfoItem
+        val repositoryInfo = args.githubRepository
 
         binding?.apply {
             ownerIconView.load(repositoryInfo.owner.avatarUrl) {

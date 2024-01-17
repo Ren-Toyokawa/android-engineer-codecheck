@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import jp.co.yumemi.android.code_check.core.data.model.GithubRepository
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -151,13 +152,13 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
     /**
      * リポジトリ情報画面に遷移する
-     * @param repositoryInfoItem ユーザーによって選択されたリポジトリの情報
+     * @param githubRepository ユーザーによって選択されたリポジトリの情報
      */
-    private fun navigateRepositoryInfoFragment(repositoryInfoItem: RepositoryInfoItem) {
+    private fun navigateRepositoryInfoFragment(githubRepository: GithubRepository) {
         val action =
             RepositorySearchFragmentDirections
                 .actionRepositorySearchFragmentToRepositoryInfoFragment(
-                    repositoryInfoItem = repositoryInfoItem,
+                    githubRepository = githubRepository,
                 )
 
         findNavController().navigate(action)
