@@ -7,8 +7,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
+import io.ktor.client.features.ClientRequestException
 import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepository
+import jp.co.yumemi.android.code_check.core.data.UserDataRepository
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +24,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RepositorySearchViewModel @Inject constructor(
-    private val githubRepositoryRepository: GithubRepositoryRepository
+    private val githubRepositoryRepository: GithubRepositoryRepository,
+    private val userDataRepository: UserDataRepository
 ): ViewModel() {
     companion object {
         private const val TAG = "RepositorySearchViewModel"
@@ -51,7 +53,8 @@ class RepositorySearchViewModel @Inject constructor(
                 handleError(e)
             }
 
-            lastSearchDate = Date()
+            // 検索した日時を保存する
+            userDataRepository.saveLastSearchDate(Date())
         }
     }
 
@@ -73,6 +76,12 @@ class RepositorySearchViewModel @Inject constructor(
             }
             is UnknownHostException -> {
                 _errorState.value = ErrorState.NetworkError
+            }
+            is ClientRequestException -> {
+                _errorState.value = ErrorState.NetworkError
+            }
+            else -> {
+                _errorState.value = ErrorState.CantFetchRepositoryInfo
             }
         }
     }

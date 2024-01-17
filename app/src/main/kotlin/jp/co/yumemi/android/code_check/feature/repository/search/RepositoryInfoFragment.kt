@@ -7,15 +7,21 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.core.data.UserDataRepository
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryInfoBinding
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * リポジトリ情報画面
  */
+@AndroidEntryPoint
 class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     companion object {
         private const val TAG = "RepositoryInfoFragment"
@@ -24,6 +30,8 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     private val args: RepositoryInfoFragmentArgs by navArgs()
 
     private var binding: FragmentRepositoryInfoBinding? = null
+
+    @Inject lateinit var userDataRepository: UserDataRepository
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -46,27 +54,34 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(TAG, "検索した日時: $lastSearchDate")
+        lifecycleScope.launch {
+            val lastSearchDate = userDataRepository.latestSearchDate.first()
+            Log.d(TAG, "検索した日時: $lastSearchDate")
+        }
 
         binding = FragmentRepositoryInfoBinding.bind(view)
 
-        val repositoryInfo = args.githubRepositorySummary
+        applyRepositorySummary()
+    }
+
+    private fun applyRepositorySummary () {
+        val repositorySummary = args.githubRepositorySummary
 
         binding?.apply {
-            ownerIconView.load(repositoryInfo.ownerIconUrl) {
+            ownerIconView.load(repositorySummary.ownerIconUrl) {
                 placeholder(R.drawable.ic_android)
                 error(R.drawable.ic_android)
             }
-            nameView.text = repositoryInfo.name
-            languageView.text = if (repositoryInfo.language !== null){
-                getString(R.string.written_language, repositoryInfo.language)
+            nameView.text = repositorySummary.name
+            languageView.text = if (repositorySummary.language !== null){
+                getString(R.string.written_language, repositorySummary.language)
             } else {
                 getString(R.string.language_not_specified)
             }
-            starsView.text = getString(R.string.star_count_text, repositoryInfo.stargazersCount)
-            watchersView.text = getString(R.string.watcher_count_text, repositoryInfo.watchersCount)
-            forksView.text = getString(R.string.fork_count_text, repositoryInfo.forksCount)
-            openIssuesView.text = getString(R.string.open_issue_count_text, repositoryInfo.openIssuesCount)
+            starsView.text = getString(R.string.star_count_text, repositorySummary.stargazersCount)
+            watchersView.text = getString(R.string.watcher_count_text, repositorySummary.watchersCount)
+            forksView.text = getString(R.string.fork_count_text, repositorySummary.forksCount)
+            openIssuesView.text = getString(R.string.open_issue_count_text, repositorySummary.openIssuesCount)
         }
     }
 }
