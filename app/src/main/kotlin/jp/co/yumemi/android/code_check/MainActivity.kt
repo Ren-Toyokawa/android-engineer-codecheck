@@ -6,8 +6,6 @@ package jp.co.yumemi.android.code_check
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.HttpClient
-import jp.co.yumemi.android.code_check.R
-import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -16,7 +14,6 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
     @Inject
     lateinit var client: HttpClient
 

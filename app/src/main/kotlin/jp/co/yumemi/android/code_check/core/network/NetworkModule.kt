@@ -17,11 +17,13 @@ object NetworkModule {
     fun provideHttpClient(): HttpClient {
         return HttpClient(Android) {
             install(JsonFeature) {
-                serializer = KotlinxSerializer(
-                    json = Json {
-                        ignoreUnknownKeys = true
-                    }
-                )
+                serializer =
+                    KotlinxSerializer(
+                        json =
+                            Json {
+                                ignoreUnknownKeys = true
+                            },
+                    )
             }
         }
     }

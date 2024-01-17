@@ -7,6 +7,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class RepositorySearchResponse(
-    val items: List<GithubRepository>
+    val items: List<GithubRepository>,
 )
-

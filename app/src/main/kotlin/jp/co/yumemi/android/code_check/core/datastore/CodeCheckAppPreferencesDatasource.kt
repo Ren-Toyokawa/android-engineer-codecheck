@@ -8,25 +8,28 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 import javax.inject.Inject
 
-class CodeCheckAppPreferencesDatasource @Inject constructor(
-    private val dataStore: DataStore<Preferences>
-){
-    companion object {
-        private val LATEST_SEARCH_DATE = longPreferencesKey("latest_search_date")
-    }
-
-    suspend fun saveLastSearchDate(date: Date) {
-        dataStore.edit { settings ->
-            settings[LATEST_SEARCH_DATE] = date.time
+class CodeCheckAppPreferencesDatasource
+    @Inject
+    constructor(
+        private val dataStore: DataStore<Preferences>,
+    ) {
+        companion object {
+            private val LATEST_SEARCH_DATE = longPreferencesKey("latest_search_date")
         }
-    }
 
-    val lastSearchDate = dataStore.data.map { settings ->
-        val latestSearchDateTime = settings[LATEST_SEARCH_DATE]
-        if (latestSearchDateTime != null) {
-            Date(latestSearchDateTime)
-        } else {
-            null
+        suspend fun saveLastSearchDate(date: Date) {
+            dataStore.edit { settings ->
+                settings[LATEST_SEARCH_DATE] = date.time
+            }
         }
+
+        val lastSearchDate =
+            dataStore.data.map { settings ->
+                val latestSearchDateTime = settings[LATEST_SEARCH_DATE]
+                if (latestSearchDateTime != null) {
+                    Date(latestSearchDateTime)
+                } else {
+                    null
+                }
+            }
     }
-}

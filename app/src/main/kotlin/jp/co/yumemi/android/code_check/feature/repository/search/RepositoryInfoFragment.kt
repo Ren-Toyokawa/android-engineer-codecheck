@@ -64,7 +64,7 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
         applyRepositorySummary()
     }
 
-    private fun applyRepositorySummary () {
+    private fun applyRepositorySummary() {
         val repositorySummary = args.githubRepositorySummary
 
         binding?.apply {
@@ -73,11 +73,13 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
                 error(R.drawable.ic_android)
             }
             nameView.text = repositorySummary.name
-            languageView.text = if (repositorySummary.language !== null){
-                getString(R.string.written_language, repositorySummary.language)
-            } else {
-                getString(R.string.language_not_specified)
-            }
+            languageView.text =
+                if (repositorySummary.language !== null)
+                    {
+                        getString(R.string.written_language, repositorySummary.language)
+                    } else {
+                    getString(R.string.language_not_specified)
+                }
             starsView.text = getString(R.string.star_count_text, repositorySummary.stargazersCount)
             watchersView.text = getString(R.string.watcher_count_text, repositorySummary.watchersCount)
             forksView.text = getString(R.string.fork_count_text, repositorySummary.forksCount)

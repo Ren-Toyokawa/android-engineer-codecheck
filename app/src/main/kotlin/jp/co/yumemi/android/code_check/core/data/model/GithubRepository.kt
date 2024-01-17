@@ -1,7 +1,5 @@
 package jp.co.yumemi.android.code_check.core.data.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -25,7 +23,6 @@ data class GithubRepository(
     @SerialName("open_issues_count")
     val openIssuesCount: Long,
 )
-
 
 @Serializable
 data class Owner(
