@@ -7,16 +7,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
 import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepository
-import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepositoryImpl
-import jp.co.yumemi.android.code_check.core.data.model.GithubRepository
-import jp.co.yumemi.android.code_check.core.data.model.RepositorySearchResponse
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
-import jp.co.yumemi.android.code_check.network.HttpClientSingleton.client
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

@@ -3,11 +3,11 @@
  */
 package jp.co.yumemi.android.code_check
 
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.network.HttpClientSingleton.client
+import io.ktor.client.HttpClient
 import java.util.Date
+import javax.inject.Inject
 
 /**
  * 本アプリのMainActivity
@@ -15,6 +15,10 @@ import java.util.Date
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
+    @Inject
+    lateinit var client: HttpClient
+
     // FIXME: Jetpack Datastoreなどを使用した方が良い気がする。
     companion object {
         // 最後に検索した日時
