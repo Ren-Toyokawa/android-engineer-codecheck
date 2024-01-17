@@ -12,9 +12,7 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.MainActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.core.data.UserDataRepository
-import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryInfoBinding
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
