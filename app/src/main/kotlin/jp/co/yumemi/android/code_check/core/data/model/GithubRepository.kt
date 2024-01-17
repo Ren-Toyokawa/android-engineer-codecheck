@@ -7,9 +7,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Githubのリポジトリ情報
- * TODO: Parcelableを除去する
  */
-@Parcelize
 @Serializable
 data class GithubRepository(
     @SerialName("full_name")
@@ -26,12 +24,11 @@ data class GithubRepository(
     val forksCount: Long,
     @SerialName("open_issues_count")
     val openIssuesCount: Long,
-) : Parcelable
+)
 
 
-@Parcelize
 @Serializable
 data class Owner(
     @SerialName("avatar_url")
     val avatarUrl: String,
-) : Parcelable
+)
