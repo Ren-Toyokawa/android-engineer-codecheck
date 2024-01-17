@@ -10,6 +10,12 @@ import javax.inject.Inject
 class GithubSearchApi @Inject constructor(
     private val httpClient: HttpClient
 ){
+    /**
+     * Githubのレポジトリを検索する
+     * エンドポイント: search/repositories
+     *
+     * @param query 検索文字列, request parameter: q
+     */
     suspend fun searchRepository(query: String): RepositorySearchResponse {
         val response: RepositorySearchResponse =
             httpClient.get("https://api.github.com/search/repositories") {

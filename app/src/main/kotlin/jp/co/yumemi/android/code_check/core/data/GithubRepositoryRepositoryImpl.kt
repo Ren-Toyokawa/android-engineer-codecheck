@@ -16,6 +16,12 @@ import javax.inject.Inject
 class GithubRepositoryRepositoryImpl @Inject constructor(
     private val githubSearchApi: GithubSearchApi,
 ): GithubRepositoryRepository {
+    /**
+     * Githubのレポジトリを検索する
+     *
+     * @param query 検索文字列
+     * @return リポジトリ概要のリスト
+     */
     override suspend fun searchRepository(query: String): List<GithubRepositorySummary> {
         val response: RepositorySearchResponse = githubSearchApi.searchRepository(query)
         return response.items.map { it.toExternalModel() }
