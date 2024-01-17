@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositorySearchBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.onEach
  * リポジトリ検索画面
  * 画面上部のテキストフィールドに入力された文字列を元に、Githubのレポジトリを検索する
  */
+@AndroidEntryPoint
 class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
     private var binding: FragmentRepositorySearchBinding? = null
 
@@ -151,13 +154,13 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
 
     /**
      * リポジトリ情報画面に遷移する
-     * @param repositoryInfoItem ユーザーによって選択されたリポジトリの情報
+     * @param githubRepositorySummary ユーザーによって選択されたリポジトリの情報
      */
-    private fun navigateRepositoryInfoFragment(repositoryInfoItem: RepositoryInfoItem) {
+    private fun navigateRepositoryInfoFragment(githubRepositorySummary: GithubRepositorySummary) {
         val action =
             RepositorySearchFragmentDirections
                 .actionRepositorySearchFragmentToRepositoryInfoFragment(
-                    repositoryInfoItem = repositoryInfoItem,
+                    githubRepositorySummary = githubRepositorySummary,
                 )
 
         findNavController().navigate(action)
