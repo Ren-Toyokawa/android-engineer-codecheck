@@ -54,7 +54,7 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
           disable-animations: true
-          profile: Pixel 4 XL
+          profile: pixel_4_xl
           disk-size: 6000M
           heap-size: 600M
           script: ./gradlew connectedDebugAndroidTest --daemon
