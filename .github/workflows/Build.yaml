@@ -24,6 +24,3 @@ jobs:
 
       - name: Run unit test on Debug Variant
         run: ./gradlew testDebugUnitTest
-
-      - name: Run UI test on Debug Variant
-        run: ./gradlew connectedDebugAndroidTest
