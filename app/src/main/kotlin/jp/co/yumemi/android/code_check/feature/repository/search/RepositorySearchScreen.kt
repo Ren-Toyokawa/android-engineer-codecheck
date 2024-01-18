@@ -21,9 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import jp.co.yumemi.android.code_check.core.designsystem.preview.MultiThemePreviews
 import jp.co.yumemi.android.code_check.core.designsystem.theme.CodeCheckAppTheme
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.core.model.dummySearchResults
+import jp.co.yumemi.android.code_check.core.ui.component.dialog.CantFetchRepositoryInfoDialog
+import jp.co.yumemi.android.code_check.core.ui.component.dialog.NetworkErrorDialog
 import jp.co.yumemi.android.code_check.core.ui.component.textfield.SearchTextField
 
 @Composable
@@ -33,11 +36,14 @@ fun RepositorySearchRoute(
 ) {
     val query: String by viewModel.query.collectAsState()
     val searchRepositoryResult: List<GithubRepositorySummary> by viewModel.searchResults.collectAsState()
+    val errorState: ErrorState by viewModel.errorState.collectAsState()
 
     RepositorySearchScreen(
         query = query,
         onQueryChanged = viewModel::onQueryChanged,
         onTapImeAction = viewModel::executeSearchRepository,
+        errorState = errorState,
+        onTapErrorDialogConfirm = viewModel::clearErrorState,
         searchRepositoryResult = searchRepositoryResult,
         onTapSearchRepositoryResult = navigateRepositoryInfo,
     )
@@ -49,6 +55,8 @@ fun RepositorySearchScreen(
     query: String = "",
     onQueryChanged: (String) -> Unit = {},
     onTapImeAction: (String) -> Unit = {},
+    errorState: ErrorState,
+    onTapErrorDialogConfirm: () -> Unit,
     searchRepositoryResult: List<GithubRepositorySummary>,
     onTapSearchRepositoryResult: (GithubRepositorySummary) -> Unit = {},
 ) {
@@ -70,6 +78,18 @@ fun RepositorySearchScreen(
             onTapSearchRepositoryResult = onTapSearchRepositoryResult,
         )
     }
+
+    // エラーダイアログ
+    when (errorState) {
+        ErrorState.CantFetchRepositoryInfo -> CantFetchRepositoryInfoDialog(
+            onClickConfirm = onTapErrorDialogConfirm,
+        )
+        ErrorState.NetworkError -> NetworkErrorDialog(
+            onClickConfirm = onTapErrorDialogConfirm,
+        )
+        ErrorState.Idle -> { /* 何もしない */ }
+    }
+
 }
 
 @Composable
@@ -125,8 +145,7 @@ fun RepositorySearchResultItem(
 
 
 
-@Preview(uiMode = UI_MODE_NIGHT_NO)
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@MultiThemePreviews
 @Composable
 fun RepositorySearchScreenPreview() {
     CodeCheckAppTheme {
@@ -134,6 +153,8 @@ fun RepositorySearchScreenPreview() {
             query = "android-coding-check",
             onQueryChanged = {},
             onTapImeAction = {},
+            errorState = ErrorState.Idle,
+            onTapErrorDialogConfirm = {},
             searchRepositoryResult = dummySearchResults,
         )
     }
