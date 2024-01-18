@@ -1,5 +1,6 @@
 package jp.co.yumemi.android.code_check.feature.repository.search
 
+import androidx.lifecycle.SavedStateHandle
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.core.model.dummySearchResults
 import jp.co.yumemi.android.code_check.testdouble.data.repository.TestGithubRepositoryRepository
@@ -24,6 +25,7 @@ class RepositorySearchViewModelTest {
     private lateinit var testGithubRepositoryRepository: TestGithubRepositoryRepository
     private lateinit var testUserDataRepository: TestUserDataRepository
     private lateinit var viewModel: RepositorySearchViewModel
+    private val savedStateHandle = SavedStateHandle()
 
     @Before
     fun setUp() {
@@ -31,7 +33,8 @@ class RepositorySearchViewModelTest {
         testUserDataRepository = TestUserDataRepository()
         viewModel = RepositorySearchViewModel(
             testGithubRepositoryRepository,
-            testUserDataRepository
+            testUserDataRepository,
+            savedStateHandle
         )
     }
 
