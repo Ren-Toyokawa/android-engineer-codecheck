@@ -1,6 +1,8 @@
 package jp.co.yumemi.android.code_check.feature.repository.search
 
+import androidx.lifecycle.SavedStateHandle
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
+import jp.co.yumemi.android.code_check.core.model.dummySearchResults
 import jp.co.yumemi.android.code_check.testdouble.data.repository.TestGithubRepositoryRepository
 import jp.co.yumemi.android.code_check.testdouble.data.repository.TestUserDataRepository
 import jp.co.yumemi.android.code_check.util.MainDispatcherRule
@@ -23,6 +25,7 @@ class RepositorySearchViewModelTest {
     private lateinit var testGithubRepositoryRepository: TestGithubRepositoryRepository
     private lateinit var testUserDataRepository: TestUserDataRepository
     private lateinit var viewModel: RepositorySearchViewModel
+    private val savedStateHandle = SavedStateHandle()
 
     @Before
     fun setUp() {
@@ -30,21 +33,22 @@ class RepositorySearchViewModelTest {
         testUserDataRepository = TestUserDataRepository()
         viewModel = RepositorySearchViewModel(
             testGithubRepositoryRepository,
-            testUserDataRepository
+            testUserDataRepository,
+            savedStateHandle
         )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `executeSearchRepository_正常な検索結果が返却される`() = runTest {
-        testGithubRepositoryRepository.testSearchResult = testSearchResults
+        testGithubRepositoryRepository.testSearchResult = dummySearchResults
 
         // 検索実行
         viewModel.executeSearchRepository("test")
 
         // 検索結果の検証
         assertEquals(
-            testSearchResults,
+            dummySearchResults,
             viewModel.searchResults.value
         )
     }
@@ -95,32 +99,3 @@ class RepositorySearchViewModelTest {
     }
 }
 
-private val testSearchResults = listOf(
-    GithubRepositorySummary(
-        name = "test",
-        ownerIconUrl = "https://avatars.githubusercontent.com/u/1?v=4",
-        language = "Kotlin",
-        stargazersCount = 1,
-        watchersCount = 1,
-        forksCount = 1,
-        openIssuesCount = 1,
-    ),
-    GithubRepositorySummary(
-        name = "test2",
-        ownerIconUrl = "https://avatars.githubusercontent.com/u/1?v=4",
-        language = "Kotlin",
-        stargazersCount = 1,
-        watchersCount = 1,
-        forksCount = 1,
-        openIssuesCount = 1,
-    ),
-    GithubRepositorySummary(
-        name = "test3",
-        ownerIconUrl = "https://avatars.githubusercontent.com/u/1?v=4",
-        language = "Kotlin",
-        stargazersCount = 1,
-        watchersCount = 1,
-        forksCount = 1,
-        openIssuesCount = 1,
-    ),
-)

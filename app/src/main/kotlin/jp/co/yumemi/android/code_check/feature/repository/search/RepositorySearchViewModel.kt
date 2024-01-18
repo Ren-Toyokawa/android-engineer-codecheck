@@ -4,6 +4,7 @@
 package jp.co.yumemi.android.code_check.feature.repository.search
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepository
 import jp.co.yumemi.android.code_check.core.data.UserDataRepository
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerializationException
@@ -24,70 +26,85 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RepositorySearchViewModel
-    @Inject
-    constructor(
-        private val githubRepositoryRepository: GithubRepositoryRepository,
-        private val userDataRepository: UserDataRepository,
-    ) : ViewModel() {
-        companion object {
-            private const val TAG = "RepositorySearchViewModel"
-        }
+@Inject
+constructor(
+    private val githubRepositoryRepository: GithubRepositoryRepository,
+    private val userDataRepository: UserDataRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
+    companion object {
+        private const val TAG = "RepositorySearchViewModel"
+        const val QUERY_KEY = "query"
+    }
 
-        private val _errorState: MutableStateFlow<ErrorState> = MutableStateFlow(ErrorState.Idle)
-        val errorState = _errorState.asStateFlow()
+    val query: StateFlow<String> = savedStateHandle.getStateFlow(QUERY_KEY, "")
 
-        // StateFlowを使用して検索結果を保持
-        private val _searchResults = MutableStateFlow<List<GithubRepositorySummary>>(emptyList())
-        val searchResults = _searchResults.asStateFlow()
+    private val _errorState: MutableStateFlow<ErrorState> = MutableStateFlow(ErrorState.Idle)
+    val errorState = _errorState.asStateFlow()
 
-        /**
-         * inputTextを元にリポジトリを検索する
-         *
-         * @param inputText 検索文字列
-         * @return リポジトリ情報のリスト
-         */
-        fun executeSearchRepository(inputText: String) {
-            viewModelScope.launch {
-                try {
-                    val searchResults = githubRepositoryRepository.searchRepository(inputText)
-                    _searchResults.value = searchResults
-                } catch (e: Exception) {
-                    handleError(e)
-                }
+    // StateFlowを使用して検索結果を保持
+    private val _searchResults = MutableStateFlow<List<GithubRepositorySummary>>(emptyList())
+    val searchResults = _searchResults.asStateFlow()
 
-                // 検索した日時を保存する
-                userDataRepository.saveLastSearchDate(Date())
+    /**
+     * 検索のクエリが変更されたときに呼ばれる
+     */
+    fun onQueryChanged(query: String) {
+        savedStateHandle[QUERY_KEY] = query
+    }
+
+
+    /**
+     * inputTextを元にリポジトリを検索する
+     *
+     * @param inputText 検索文字列
+     * @return リポジトリ情報のリスト
+     */
+    fun executeSearchRepository(inputText: String) {
+        viewModelScope.launch {
+            try {
+                val searchResults = githubRepositoryRepository.searchRepository(inputText)
+                _searchResults.value = searchResults
+            } catch (e: Exception) {
+                handleError(e)
             }
-        }
 
-        /**
-         * エラー状態をIdleにする
-         */
-        fun clearErrorState() {
-            _errorState.value = ErrorState.Idle
+            // 検索した日時を保存する
+            userDataRepository.saveLastSearchDate(Date())
         }
+    }
 
-        /**
-         * エラーをハンドリングする
-         */
-        private fun handleError(e: Exception) {
-            Log.e(TAG, "error: $e")
-            when (e) {
-                is SerializationException -> {
-                    _errorState.value = ErrorState.CantFetchRepositoryInfo
-                }
-                is UnknownHostException -> {
-                    _errorState.value = ErrorState.NetworkError
-                }
-                is ClientRequestException -> {
-                    _errorState.value = ErrorState.NetworkError
-                }
-                else -> {
-                    _errorState.value = ErrorState.CantFetchRepositoryInfo
-                }
+    /**
+     * エラー状態をIdleにする
+     */
+    fun clearErrorState() {
+        _errorState.value = ErrorState.Idle
+    }
+
+    /**
+     * エラーをハンドリングする
+     */
+    private fun handleError(e: Exception) {
+        Log.e(TAG, "error: $e")
+        when (e) {
+            is SerializationException -> {
+                _errorState.value = ErrorState.CantFetchRepositoryInfo
+            }
+
+            is UnknownHostException -> {
+                _errorState.value = ErrorState.NetworkError
+            }
+
+            is ClientRequestException -> {
+                _errorState.value = ErrorState.NetworkError
+            }
+
+            else -> {
+                _errorState.value = ErrorState.CantFetchRepositoryInfo
             }
         }
     }
+}
 
 /**
  * エラーの状態を表すsealed interface
