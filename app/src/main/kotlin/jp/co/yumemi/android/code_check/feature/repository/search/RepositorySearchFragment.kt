@@ -43,7 +43,9 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
         return ComposeView(requireContext()).apply {
             setContent {
                 CodeCheckAppTheme {
-                    RepositorySearchRoute()
+                    RepositorySearchRoute(
+                        navigateRepositoryInfo = ::navigateRepositoryInfoFragment
+                    )
                 }
             }
         }

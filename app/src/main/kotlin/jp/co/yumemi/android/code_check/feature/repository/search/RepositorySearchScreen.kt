@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,8 +29,8 @@ import jp.co.yumemi.android.code_check.core.ui.component.textfield.SearchTextFie
 @Composable
 fun RepositorySearchRoute(
     viewModel: RepositorySearchViewModel = hiltViewModel(),
+    navigateRepositoryInfo: (GithubRepositorySummary) -> Unit,
 ) {
-
     val query: String by viewModel.query.collectAsState()
     val searchRepositoryResult: List<GithubRepositorySummary> by viewModel.searchResults.collectAsState()
 
@@ -38,6 +39,7 @@ fun RepositorySearchRoute(
         onQueryChanged = viewModel::onQueryChanged,
         onTapImeAction = viewModel::executeSearchRepository,
         searchRepositoryResult = searchRepositoryResult,
+        onTapSearchRepositoryResult = navigateRepositoryInfo,
     )
 }
 
@@ -48,6 +50,7 @@ fun RepositorySearchScreen(
     onQueryChanged: (String) -> Unit = {},
     onTapImeAction: (String) -> Unit = {},
     searchRepositoryResult: List<GithubRepositorySummary>,
+    onTapSearchRepositoryResult: (GithubRepositorySummary) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -64,6 +67,7 @@ fun RepositorySearchScreen(
             modifier = Modifier
                 .padding(it),
             repositorySearchResults = searchRepositoryResult,
+            onTapSearchRepositoryResult = onTapSearchRepositoryResult,
         )
     }
 }
@@ -72,6 +76,7 @@ fun RepositorySearchScreen(
 fun RepositorySearchList(
     modifier: Modifier = Modifier,
     repositorySearchResults: List<GithubRepositorySummary> = dummySearchResults,
+    onTapSearchRepositoryResult: (GithubRepositorySummary) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier
@@ -83,6 +88,7 @@ fun RepositorySearchList(
         ) { index ->
             RepositorySearchResultItem(
                 repositorySearchResult = repositorySearchResults[index],
+                onTap = onTapSearchRepositoryResult,
             )
         }
     }
@@ -92,6 +98,7 @@ fun RepositorySearchList(
 fun RepositorySearchResultItem(
     modifier: Modifier = Modifier,
     repositorySearchResult: GithubRepositorySummary,
+    onTap: (GithubRepositorySummary) -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -106,7 +113,8 @@ fun RepositorySearchResultItem(
                 shape = MaterialTheme.shapes.small,
             )
             .padding(8.dp)
-
+            .clickable {
+                 onTap(repositorySearchResult)            }
     ) {
         Text(
             repositorySearchResult.name,
