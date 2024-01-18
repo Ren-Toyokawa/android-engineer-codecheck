@@ -31,10 +31,6 @@ import kotlinx.coroutines.flow.onEach
  */
 @AndroidEntryPoint
 class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
-    private var binding: FragmentRepositorySearchBinding? = null
-
-    private val viewModel: RepositorySearchViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,49 +48,6 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
     }
 
     /**
-     * エラーの状態を監視し、エラーが発生した場合にダイアログを表示する
-     */
-    private fun errorHandling() {
-        val context = requireContext()
-        viewModel
-            .errorState
-            .onEach {
-                when (it) {
-                    ErrorState.CantFetchRepositoryInfo -> showCantFetchRepositoryInfoDialog(context)
-                    ErrorState.NetworkError -> showNetworkErrorDialog(context)
-                    ErrorState.Idle -> { /* 何もしない */ }
-                }
-            }
-            .launchIn(lifecycleScope)
-    }
-
-    /**
-     * ネットワークエラーのダイアログを表示する
-     */
-    private fun showNetworkErrorDialog(context: Context) {
-        AlertDialog.Builder(context)
-            .setTitle(R.string.network_error_dialog_title)
-            .setMessage(R.string.network_error_dialog_message)
-            .setPositiveButton(R.string.network_error_dialog_positive_button) { _, _ ->
-                viewModel.clearErrorState()
-            }
-            .show()
-    }
-
-    /**
-     * リポジトリ情報の取得に失敗した場合のダイアログを表示する
-     */
-    private fun showCantFetchRepositoryInfoDialog(context: Context) {
-        AlertDialog.Builder(context)
-            .setTitle(R.string.error_dialog_title)
-            .setMessage(R.string.error_dialog_message)
-            .setPositiveButton(R.string.error_dialog_positive_button) { _, _ ->
-                viewModel.clearErrorState()
-            }
-            .show()
-    }
-
-    /**
      * リポジトリ情報画面に遷移する
      * @param githubRepositorySummary ユーザーによって選択されたリポジトリの情報
      */
@@ -105,10 +58,5 @@ class RepositorySearchFragment : Fragment(R.layout.fragment_repository_search) {
             )
 
         findNavController().navigate(action)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 }
