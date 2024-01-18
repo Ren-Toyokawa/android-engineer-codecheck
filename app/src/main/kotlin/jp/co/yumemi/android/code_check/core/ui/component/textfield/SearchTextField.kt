@@ -43,7 +43,7 @@ fun SearchTextField(
     searchQuery: String = "",
     placeholder: String = "",
     onSearchQueryChanged: (String) -> Unit = {},
-    onTapImeAction: () -> Unit = {},
+    onTapImeAction: (String) -> Unit = {},
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ){
     val focusRequester = remember { FocusRequester() }
@@ -68,7 +68,7 @@ fun SearchTextField(
         keyboardActions = KeyboardActions(
             onSearch = {
                 keyboardController?.hide()
-                onTapImeAction()
+                onTapImeAction(searchQuery)
             }
         ),
         textStyle = TextStyle(
