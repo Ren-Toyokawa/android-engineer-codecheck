@@ -11,18 +11,22 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import jp.co.yumemi.android.code_check.MainActivity
 import jp.co.yumemi.android.code_check.R
-import kotlinx.coroutines.delay
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class RepositorySearchFragmentTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
     var activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
@@ -38,9 +42,6 @@ class RepositorySearchFragmentTest {
 
         // RecyclerViewのアイテムが表示されることを確認
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
-
-        // これはやるべきではない
-        Thread.sleep(5000)
 
         // RecyclerViewの最初のアイテムをタップ
         onView(withId(R.id.recyclerView))
