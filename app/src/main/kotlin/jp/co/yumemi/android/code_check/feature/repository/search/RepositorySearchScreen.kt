@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import jp.co.yumemi.android.code_check.core.designsystem.theme.CodeCheckAppTheme
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.core.model.dummySearchResults
+import jp.co.yumemi.android.code_check.core.ui.component.textfield.SearchTextField
 
 @Composable
 fun RepositorySearchRoute(
@@ -73,94 +74,6 @@ fun RepositorySearchScreen(
                 .padding(it)
         )
     }
-}
-
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun SearchTextField(
-    modifier: Modifier = Modifier,
-    searchQuery: String = "",
-    placeholder: String = "",
-    onSearchQueryChanged: (String) -> Unit = {},
-    onTapImeAction: () -> Unit = {},
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-){
-    val focusRequester = remember { FocusRequester() }
-    val keyboardController = LocalSoftwareKeyboardController.current
-    BasicTextField(
-        modifier = modifier
-            .height(56.0.dp)
-            .fillMaxWidth(1.0f)
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = MaterialTheme.shapes.small,
-            )
-            .border(
-                width = 0.5.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                shape = MaterialTheme.shapes.small,
-            )
-            .focusRequester(focusRequester),
-        value = searchQuery,
-        onValueChange = onSearchQueryChanged,
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(
-            onSearch = {
-                keyboardController?.hide()
-                onTapImeAction()
-            }
-        ),
-        textStyle = TextStyle(
-            color = MaterialTheme.colorScheme.onSurface,
-        ),
-        decorationBox = @Composable { innerTextField ->
-            TextFieldDefaults.TextFieldDecorationBox(
-                value = searchQuery,
-                innerTextField = innerTextField,
-                enabled = true,
-                singleLine = true,
-                visualTransformation = VisualTransformation.None,
-                interactionSource = interactionSource,
-                leadingIcon = {
-                    Box(modifier = Modifier.offset(x = 4.dp)) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                },
-                placeholder = {
-                    if (searchQuery.isBlank()) {
-                        Text(
-                            text = placeholder,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                },
-                trailingIcon = {
-                    if (searchQuery.isNotEmpty()) {
-                        Box(modifier = Modifier.offset(x = (-4).dp)) {
-                            IconButton(
-                                onClick = {
-                                    onSearchQueryChanged("")
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                        }
-                    }
-                },
-                contentPadding = TextFieldDefaults.textFieldWithLabelPadding(0.dp),
-                container = {},
-            )
-        }
-    )
 }
 
 @Composable
