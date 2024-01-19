@@ -2,7 +2,6 @@ package jp.co.yumemi.android.code_check.feature.repository.search
 
 import androidx.lifecycle.SavedStateHandle
 import jp.co.yumemi.android.code_check.core.data.fake.dummySearchResults
-import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.testdouble.data.repository.TestGithubRepositoryRepository
 import jp.co.yumemi.android.code_check.testdouble.data.repository.TestUserDataRepository
 import jp.co.yumemi.android.code_check.util.MainDispatcherRule

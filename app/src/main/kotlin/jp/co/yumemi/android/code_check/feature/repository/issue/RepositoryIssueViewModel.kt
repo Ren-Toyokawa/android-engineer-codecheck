@@ -1,12 +1,10 @@
 package jp.co.yumemi.android.code_check.feature.repository.issue
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.core.data.GithubIssueRepository
-import jp.co.yumemi.android.code_check.core.data.model.Issue
 import jp.co.yumemi.android.code_check.core.model.GithubIssue
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

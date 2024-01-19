@@ -1,8 +1,8 @@
 package jp.co.yumemi.android.code_check.core.data
 
 import jp.co.yumemi.android.code_check.core.api.github.GithubSearchApi
-import jp.co.yumemi.android.code_check.core.data.model.RepositorySearchResponse
-import jp.co.yumemi.android.code_check.core.data.model.toExternalModel
+import jp.co.yumemi.android.code_check.core.api.github.model.RepositorySearchResponse
+import jp.co.yumemi.android.code_check.core.api.github.model.toExternalModel
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import javax.inject.Inject
 

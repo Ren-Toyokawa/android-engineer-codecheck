@@ -1,7 +1,7 @@
 package jp.co.yumemi.android.code_check.core.data
 
 import jp.co.yumemi.android.code_check.core.api.github.GithubIssueApi
-import jp.co.yumemi.android.code_check.core.data.model.asExternalModel
+import jp.co.yumemi.android.code_check.core.api.github.model.asExternalModel
 import jp.co.yumemi.android.code_check.core.model.GithubIssue
 import javax.inject.Inject
 

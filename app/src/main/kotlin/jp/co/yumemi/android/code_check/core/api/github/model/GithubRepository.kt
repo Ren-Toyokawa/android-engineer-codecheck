@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.core.data.model
+package jp.co.yumemi.android.code_check.core.api.github.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
