@@ -32,6 +32,12 @@
         android:id="@+id/repositoryIssueFragment"
         android:name="jp.co.yumemi.android.code_check.feature.repository.issue.RepositoryIssueFragment"
         android:label="@string/repository_issue">
+        <argument
+            android:name="repositoryName"
+            app:argType="string" />
+        <argument
+            android:name="ownerName"
+            app:argType="string" />
     </fragment>
 
 </navigation>

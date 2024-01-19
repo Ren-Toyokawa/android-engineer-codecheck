@@ -13,7 +13,9 @@ class FakeGithubRepositoryRepository @Inject constructor(): GithubRepositoryRepo
 val dummySearchResults = listOf(
     GithubRepositorySummary(
         name = "dummy1",
+        fullName = "dummy1",
         ownerIconUrl = "https://dummy1.com",
+        ownerName = "dummy1",
         description = "dummy1",
         language = "Kotlin",
         stargazersCount = 100,
@@ -23,7 +25,9 @@ val dummySearchResults = listOf(
     ),
     GithubRepositorySummary(
         name = "dummy2",
+        fullName = "dummy2",
         ownerIconUrl = "https://dummy2.com",
+        ownerName = "dummy2",
         description = null,
         language = "Java",
         stargazersCount = 200,
@@ -33,7 +37,9 @@ val dummySearchResults = listOf(
     ),
     GithubRepositorySummary(
         name = "dummy3",
+        fullName = "dummy3",
         ownerIconUrl = "https://dummy3.com",
+        ownerName = "dummy3",
         description = "dummy3",
         language = "Swift",
         stargazersCount = 300,
@@ -43,7 +49,9 @@ val dummySearchResults = listOf(
     ),
     GithubRepositorySummary(
         name = "dummy4",
+        fullName = "dummy4",
         ownerIconUrl = "https://dummy4.com",
+        ownerName = "dummy4",
         description = null,
         language = "Objective-C",
         stargazersCount = 400,
@@ -53,7 +61,9 @@ val dummySearchResults = listOf(
     ),
     GithubRepositorySummary(
         name = "dummy5",
+        fullName = "dummy5",
         ownerIconUrl = "https://dummy5.com",
+        ownerName = "dummy5",
         description = "dummy5",
         language = "C++",
         stargazersCount = 500,
@@ -63,7 +73,9 @@ val dummySearchResults = listOf(
     ),
     GithubRepositorySummary(
         name = "dummy6",
+        fullName = "dummy6",
         ownerIconUrl = "https://dummy6.com",
+        ownerName = "dummy6",
         description = null,
         language = "C#",
         stargazersCount = 600,
@@ -73,7 +85,9 @@ val dummySearchResults = listOf(
     ),
     GithubRepositorySummary(
         name = "dummy7",
+        fullName = "dummy7",
         ownerIconUrl = "https://dummy7.com",
+        ownerName = "dummy7",
         description = "dummy7",
         language = "JavaScript",
         stargazersCount = 700,
@@ -83,7 +97,9 @@ val dummySearchResults = listOf(
     ),
     GithubRepositorySummary(
         name = "dummy8",
+        fullName = "dummy8",
         ownerIconUrl = "https://dummy8.com",
+        ownerName = "dummy8",
         description = null,
         language = "Go",
         stargazersCount = 800,
