@@ -150,7 +150,7 @@ fun RepositorySearchResultItem(
     ) {
         Text(
             repositorySearchResult.name,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
         )
 
