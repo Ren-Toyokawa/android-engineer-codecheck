@@ -19,16 +19,19 @@ import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 @Composable
 fun RepositoryInfoRoute(
     repositorySummary: GithubRepositorySummary,
+    navigateRepositoryIssueFragment: () -> Unit
 ) {
     RepositoryInfoScreen(
-        repositorySummary = repositorySummary
+        repositorySummary = repositorySummary,
+        onTapIssue = navigateRepositoryIssueFragment
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepositoryInfoScreen(
-    repositorySummary: GithubRepositorySummary
+    repositorySummary: GithubRepositorySummary,
+    onTapIssue: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -43,7 +46,8 @@ fun RepositoryInfoScreen(
                 .padding(8.dp),
         ) {
             RepositoryInfoHeader(
-                repositorySummary = repositorySummary
+                repositorySummary = repositorySummary,
+                onTapIssue = onTapIssue
             )
         }
     }
@@ -55,7 +59,8 @@ fun RepositoryInfoScreen(
 fun RepositoryInfoScreenPreview() {
     CodeCheckAppTheme {
         RepositoryInfoScreen(
-            repositorySummary = dummySearchResults[0]
+            repositorySummary = dummySearchResults[0],
+            onTapIssue = {}
         )
     }
 }
