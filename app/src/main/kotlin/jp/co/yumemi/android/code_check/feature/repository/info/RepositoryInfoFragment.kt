@@ -1,24 +1,22 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check.feature.repository.search
+package jp.co.yumemi.android.code_check.feature.repository.info
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.core.data.UserDataRepository
 import jp.co.yumemi.android.code_check.core.designsystem.theme.CodeCheckAppTheme
-import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryInfoBinding
+import jp.co.yumemi.android.code_check.feature.repository.search.RepositoryInfoFragmentArgs
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
