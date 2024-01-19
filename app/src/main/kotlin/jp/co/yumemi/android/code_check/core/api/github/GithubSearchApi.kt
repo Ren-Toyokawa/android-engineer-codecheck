@@ -4,7 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
-import jp.co.yumemi.android.code_check.core.data.model.RepositorySearchResponse
+import jp.co.yumemi.android.code_check.core.api.github.model.RepositorySearchResponse
 import javax.inject.Inject
 
 class GithubSearchApi

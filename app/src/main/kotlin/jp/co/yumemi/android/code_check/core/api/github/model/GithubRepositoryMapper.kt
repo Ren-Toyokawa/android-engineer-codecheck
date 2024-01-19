@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.core.data.model
+package jp.co.yumemi.android.code_check.core.api.github.model
 
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 

@@ -3,7 +3,7 @@ package jp.co.yumemi.android.code_check.core.api.github
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
-import jp.co.yumemi.android.code_check.core.data.model.Issue
+import jp.co.yumemi.android.code_check.core.api.github.model.Issue
 import javax.inject.Inject
 
 class GithubIssueApi @Inject constructor(
