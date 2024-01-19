@@ -1,5 +1,17 @@
 package jp.co.yumemi.android.code_check.feature
 
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasImeAction
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.printToLog
+import androidx.compose.ui.text.input.ImeAction
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -27,37 +39,27 @@ class RepositorySearchFragmentTest {
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    var activityRule = ActivityScenarioRule(MainActivity::class.java)
+    var composeTestRule = createAndroidComposeRule<MainActivity>()
+
 
     @Test
     fun search_scenario() {
         // 検索バーにテキストを入力
-        onView(withId(R.id.searchInputText))
-            .perform(
-                typeText("Android")
-            )
+        composeTestRule
+            .onNodeWithTag("SearchTextField")
+            .assertIsDisplayed()
+            .performTextInput("検索クエリ")
 
         // 検索ボタンをタップ
-        onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
+        composeTestRule.onNode(hasImeAction(ImeAction.Search)).performImeAction()
 
-        // RecyclerViewのアイテムが表示されることを確認
-        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        // 検索結果が表示されることを確認
+        composeTestRule.onNodeWithText("dummy1").assertIsDisplayed()
 
         // RecyclerViewの最初のアイテムをタップ
-        onView(withId(R.id.recyclerView))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                    0, click()
-                )
-            )
+        composeTestRule.onNodeWithText("dummy1").performClick()
 
         // RepositoryInfoFragmentのViewが表示されることを確認
-        onView(withId(R.id.ownerIconView)).check(matches(isDisplayed()))
-        onView(withId(R.id.nameView)).check(matches(isDisplayed()))
-        onView(withId(R.id.languageView)).check(matches(isDisplayed()))
-        onView(withId(R.id.starsView)).check(matches(isDisplayed()))
-        onView(withId(R.id.watchersView)).check(matches(isDisplayed()))
-        onView(withId(R.id.forksView)).check(matches(isDisplayed()))
-        onView(withId(R.id.openIssuesView)).check(matches(isDisplayed()))
+        composeTestRule.onNodeWithTag("RepositoryInfoScreen").assertIsDisplayed()
     }
 }
