@@ -16,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.core.data.UserDataRepository
 import jp.co.yumemi.android.code_check.core.designsystem.theme.CodeCheckAppTheme
-import jp.co.yumemi.android.code_check.feature.repository.search.RepositoryInfoFragmentArgs
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
