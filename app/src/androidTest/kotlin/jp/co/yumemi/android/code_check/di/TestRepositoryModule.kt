@@ -6,8 +6,6 @@ import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import jp.co.yumemi.android.code_check.core.data.GithubIssueRepository
 import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepository
-import jp.co.yumemi.android.code_check.core.data.GithubRepositoryRepositoryImpl
-import jp.co.yumemi.android.code_check.core.data.OfflineUserDataRepository
 import jp.co.yumemi.android.code_check.core.data.UserDataRepository
 import jp.co.yumemi.android.code_check.core.data.di.RepositoryModule
 import jp.co.yumemi.android.code_check.core.data.fake.FakeGithubIssueRepository
