@@ -17,12 +17,27 @@
 
     <fragment
         android:id="@+id/repositoryInfoFragment"
-        android:name="jp.co.yumemi.android.code_check.feature.repository.search.RepositoryInfoFragment"
+        android:name="jp.co.yumemi.android.code_check.feature.repository.info.RepositoryInfoFragment"
         android:label="@string/repository_info"
         tools:layout="@layout/fragment_repository_info">
         <argument
             android:name="githubRepositorySummary"
             app:argType="jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary" />
+        <action
+            android:id="@+id/action_repositoryInfoFragment_to_repositoryIssueFragment"
+            app:destination="@id/repositoryIssueFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/repositoryIssueFragment"
+        android:name="jp.co.yumemi.android.code_check.feature.repository.issue.RepositoryIssueFragment"
+        android:label="@string/repository_issue">
+        <argument
+            android:name="repositoryName"
+            app:argType="string" />
+        <argument
+            android:name="ownerName"
+            app:argType="string" />
     </fragment>
 
 </navigation>

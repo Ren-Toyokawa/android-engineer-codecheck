@@ -9,7 +9,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class GithubRepositorySummary(
     val name: String,
+    val fullName: String,
     val ownerIconUrl: String,
+    val ownerName: String,
     val description: String?,
     val language: String?,
     val stargazersCount: Long,

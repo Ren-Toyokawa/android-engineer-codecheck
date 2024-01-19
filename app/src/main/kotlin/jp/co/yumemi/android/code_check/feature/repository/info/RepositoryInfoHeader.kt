@@ -1,8 +1,9 @@
-package jp.co.yumemi.android.code_check.feature.repository.search
+package jp.co.yumemi.android.code_check.feature.repository.info
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,10 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import jp.co.yumemi.android.code_check.R
@@ -33,7 +34,8 @@ import jp.co.yumemi.android.code_check.core.ui.component.toKString
 
 @Composable
 fun RepositoryInfoHeader(
-    repositorySummary: GithubRepositorySummary
+    repositorySummary: GithubRepositorySummary,
+    onTapIssue: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -43,7 +45,8 @@ fun RepositoryInfoHeader(
         )
 
         RepositoryBasicData(
-            repositorySummary = repositorySummary
+            repositorySummary = repositorySummary,
+            onTapIssue = onTapIssue,
         )
 
         RepositoryWrittenLanguage(
@@ -71,7 +74,7 @@ fun RepositoryNameAndIcon(
         )
 
         Text(
-            text = repositorySummary.name,
+            text = repositorySummary.fullName,
             color = MaterialTheme.colorScheme.onBackground
         )
     }
@@ -79,7 +82,8 @@ fun RepositoryNameAndIcon(
 
 @Composable
 fun RepositoryBasicData(
-    repositorySummary: GithubRepositorySummary
+    repositorySummary: GithubRepositorySummary,
+    onTapIssue: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -104,6 +108,11 @@ fun RepositoryBasicData(
         )
 
         IconWithCount(
+            modifier = Modifier
+                .clickable {
+                    onTapIssue()
+                }
+                .testTag("IssueButton"),
             iconPainterResource = painterResource(id = R.drawable.issue_opened),
             count = repositorySummary.openIssuesCount
         )
@@ -173,7 +182,8 @@ fun RepositoryWrittenLanguage(
 fun RepositoryInfoHeaderPreview() {
     CodeCheckAppTheme {
         RepositoryInfoHeader(
-            repositorySummary = dummySearchResults[0]
+            repositorySummary = dummySearchResults[0],
+            onTapIssue = {}
         )
     }
 }
