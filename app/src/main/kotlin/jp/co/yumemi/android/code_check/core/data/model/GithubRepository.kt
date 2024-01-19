@@ -8,10 +8,14 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class GithubRepository(
+    @SerialName("id")
+    val id: Int,
     @SerialName("full_name")
     val name: String,
     @SerialName("owner")
     val owner: Owner,
+    @SerialName("description")
+    val description: String?,
     @SerialName("language")
     val language: String?,
     @SerialName("stargazers_count")
