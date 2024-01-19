@@ -5,7 +5,11 @@ package jp.co.yumemi.android.code_check.feature.repository.search
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -33,6 +37,22 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
     @Inject lateinit var userDataRepository: UserDataRepository
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                MaterialTheme {
+                    RepositoryInfoRoute(
+                        repositorySummary = args.githubRepositorySummary
+                    )
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         // ViewBindingのインスタンスを破棄する
@@ -58,10 +78,6 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
             val lastSearchDate = userDataRepository.latestSearchDate.first()
             Log.d(TAG, "検索した日時: $lastSearchDate")
         }
-
-        binding = FragmentRepositoryInfoBinding.bind(view)
-
-        applyRepositorySummary()
     }
 
     private fun applyRepositorySummary() {
