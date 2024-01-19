@@ -1,11 +1,9 @@
 package jp.co.yumemi.android.code_check.feature.repository.search
 
 import androidx.lifecycle.SavedStateHandle
-import jp.co.yumemi.android.code_check.core.model.GithubIssue
+import jp.co.yumemi.android.code_check.core.data.fake.dummyIssues
 import jp.co.yumemi.android.code_check.feature.repository.issue.RepositoryIssueViewModel
 import jp.co.yumemi.android.code_check.testdouble.data.repository.TestGithubIssueRepository
-import jp.co.yumemi.android.code_check.testdouble.data.repository.TestGithubRepositoryRepository
-import jp.co.yumemi.android.code_check.testdouble.data.repository.TestUserDataRepository
 import jp.co.yumemi.android.code_check.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -41,18 +39,3 @@ class RepositoryIssueViewModelTest {
         assertEquals(dummyIssues, viewModel.issues.value)
     }
 }
-
-val dummyIssues = listOf(
-    GithubIssue(
-        number = 1,
-        title = "test",
-    ),
-    GithubIssue(
-        number = 2,
-        title = "test2",
-    ),
-    GithubIssue(
-        number = 3,
-        title = "test3",
-    ),
-)
