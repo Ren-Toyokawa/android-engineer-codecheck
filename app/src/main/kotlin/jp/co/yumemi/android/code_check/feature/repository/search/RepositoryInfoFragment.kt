@@ -33,8 +33,6 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
 
     private val args: RepositoryInfoFragmentArgs by navArgs()
 
-    private var binding: FragmentRepositoryInfoBinding? = null
-
     @Inject lateinit var userDataRepository: UserDataRepository
 
     override fun onCreateView(
@@ -53,17 +51,10 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // ViewBindingのインスタンスを破棄する
-        // FragmentのインスタンスはonDestroyView以降も破棄されない
-        // そのため、ここでViewBindingのインスタンスを破棄する必要がある
-        binding = null
-    }
-
     /**
      * FragmentのViewが生成された後に呼び出される。
-     * ここで、リポジトリ情報をViewにバインドし、UIの更新をしている。
+     *
+     * 最後に検索した日時をログで表示している。現状はそれ以外は特にしていない
      *
      * @param view このFragmentのRoot View
      * @param savedInstanceState このフラグメントの以前の保存状態を含むBundle、再作成時にのみ非nullとなる
@@ -77,29 +68,6 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
         lifecycleScope.launch {
             val lastSearchDate = userDataRepository.latestSearchDate.first()
             Log.d(TAG, "検索した日時: $lastSearchDate")
-        }
-    }
-
-    private fun applyRepositorySummary() {
-        val repositorySummary = args.githubRepositorySummary
-
-        binding?.apply {
-            ownerIconView.load(repositorySummary.ownerIconUrl) {
-                placeholder(R.drawable.ic_android)
-                error(R.drawable.ic_android)
-            }
-            nameView.text = repositorySummary.name
-            languageView.text =
-                if (repositorySummary.language !== null)
-                    {
-                        getString(R.string.written_language, repositorySummary.language)
-                    } else {
-                    getString(R.string.language_not_specified)
-                }
-            starsView.text = getString(R.string.star_count_text, repositorySummary.stargazersCount)
-            watchersView.text = getString(R.string.watcher_count_text, repositorySummary.watchersCount)
-            forksView.text = getString(R.string.fork_count_text, repositorySummary.forksCount)
-            openIssuesView.text = getString(R.string.open_issue_count_text, repositorySummary.openIssuesCount)
         }
     }
 }
