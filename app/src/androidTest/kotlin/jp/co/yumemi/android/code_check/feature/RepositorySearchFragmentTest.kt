@@ -61,5 +61,9 @@ class RepositorySearchFragmentTest {
 
         // RepositoryInfoFragmentのViewが表示されることを確認
         composeTestRule.onNodeWithTag("RepositoryInfoScreen").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("IssueButton").performClick()
+
+        composeTestRule.onNodeWithTag("RepositoryIssueScreen").assertIsDisplayed()
     }
 }
