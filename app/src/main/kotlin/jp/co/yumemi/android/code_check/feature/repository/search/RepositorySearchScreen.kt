@@ -6,25 +6,32 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.core.data.fake.dummySearchResults
 import jp.co.yumemi.android.code_check.core.designsystem.preview.MultiThemePreviews
 import jp.co.yumemi.android.code_check.core.designsystem.theme.CodeCheckAppTheme
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
-import jp.co.yumemi.android.code_check.core.model.dummySearchResults
 import jp.co.yumemi.android.code_check.core.ui.component.dialog.CantFetchRepositoryInfoDialog
 import jp.co.yumemi.android.code_check.core.ui.component.dialog.NetworkErrorDialog
 import jp.co.yumemi.android.code_check.core.ui.component.textfield.SearchTextField
@@ -70,7 +77,7 @@ fun RepositorySearchScreen(
                 onTapImeAction = onTapImeAction,
             )
         }
-    ){
+    ) {
         RepositorySearchList(
             modifier = Modifier
                 .padding(it),
@@ -84,10 +91,13 @@ fun RepositorySearchScreen(
         ErrorState.CantFetchRepositoryInfo -> CantFetchRepositoryInfoDialog(
             onClickConfirm = onTapErrorDialogConfirm,
         )
+
         ErrorState.NetworkError -> NetworkErrorDialog(
             onClickConfirm = onTapErrorDialogConfirm,
         )
-        ErrorState.Idle -> { /* 何もしない */ }
+
+        ErrorState.Idle -> { /* 何もしない */
+        }
     }
 
 }
@@ -120,7 +130,7 @@ fun RepositorySearchResultItem(
     repositorySearchResult: GithubRepositorySummary,
     onTap: (GithubRepositorySummary) -> Unit = {},
 ) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
@@ -134,13 +144,53 @@ fun RepositorySearchResultItem(
             )
             .padding(8.dp)
             .clickable {
-                 onTap(repositorySearchResult)            }
+                onTap(repositorySearchResult)
+            },
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             repositorySearchResult.name,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
         )
+
+        repositorySearchResult.description?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = repositorySearchResult.language ?: "No language",
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.star),
+                    contentDescription = "Star",
+                    modifier = Modifier.size(12.dp)
+                )
+
+                Text(
+                    text = repositorySearchResult.stargazersCount.toString(),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                )
+            }
+        }
     }
 }
 
