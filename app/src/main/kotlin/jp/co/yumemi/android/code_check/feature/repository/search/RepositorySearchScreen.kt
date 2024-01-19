@@ -144,8 +144,6 @@ fun RepositorySearchResultItem(
     }
 }
 
-
-
 @MultiThemePreviews
 @Composable
 fun RepositorySearchScreenPreview() {

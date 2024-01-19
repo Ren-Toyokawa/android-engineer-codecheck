@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
@@ -61,7 +62,8 @@ fun SearchTextField(
                 color = MaterialTheme.colorScheme.outlineVariant,
                 shape = MaterialTheme.shapes.small,
             )
-            .focusRequester(focusRequester),
+            .focusRequester(focusRequester)
+            .testTag("SearchTextField"),
         value = searchQuery,
         onValueChange = onSearchQueryChanged,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),

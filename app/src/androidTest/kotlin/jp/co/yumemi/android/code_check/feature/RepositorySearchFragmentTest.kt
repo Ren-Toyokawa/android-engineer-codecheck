@@ -1,5 +1,17 @@
 package jp.co.yumemi.android.code_check.feature
 
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasImeAction
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.printToLog
+import androidx.compose.ui.text.input.ImeAction
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -27,14 +39,27 @@ class RepositorySearchFragmentTest {
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    var activityRule = ActivityScenarioRule(MainActivity::class.java)
+    var composeTestRule = createAndroidComposeRule<MainActivity>()
+
 
     @Test
     fun search_scenario() {
         // 検索バーにテキストを入力
+        composeTestRule
+            .onNodeWithTag("SearchTextField")
+            .assertIsDisplayed()
+            .performTextInput("検索クエリ")
+
         // 検索ボタンをタップ
-        // 検索結果が入ることを確認
-        // RecyclerViewの最初のアイテムをタップs
+        composeTestRule.onNode(hasImeAction(ImeAction.Search)).performImeAction()
+
+        // 検索結果が表示されることを確認
+        composeTestRule.onNodeWithText("dummy1").assertIsDisplayed()
+
+        // RecyclerViewの最初のアイテムをタップ
+        composeTestRule.onNodeWithText("dummy1").performClick()
+
         // RepositoryInfoFragmentのViewが表示されることを確認
+        composeTestRule.onNodeWithTag("RepositoryInfoScreen").assertIsDisplayed()
     }
 }

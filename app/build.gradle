@@ -106,5 +106,10 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
+
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+
     kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
 }
