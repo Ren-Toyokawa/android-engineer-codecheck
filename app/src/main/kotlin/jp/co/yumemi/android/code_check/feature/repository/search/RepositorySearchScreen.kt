@@ -35,6 +35,7 @@ import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
 import jp.co.yumemi.android.code_check.core.ui.component.dialog.CantFetchRepositoryInfoDialog
 import jp.co.yumemi.android.code_check.core.ui.component.dialog.NetworkErrorDialog
 import jp.co.yumemi.android.code_check.core.ui.component.textfield.SearchTextField
+import jp.co.yumemi.android.code_check.core.ui.component.toKString
 
 @Composable
 fun RepositorySearchRoute(
@@ -185,7 +186,7 @@ fun RepositorySearchResultItem(
                 )
 
                 Text(
-                    text = repositorySearchResult.stargazersCount.toString(),
+                    text = repositorySearchResult.stargazersCount.toKString(),
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = MaterialTheme.typography.bodySmall.fontSize,
                 )
