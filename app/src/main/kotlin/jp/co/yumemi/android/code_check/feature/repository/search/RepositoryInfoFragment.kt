@@ -17,6 +17,7 @@ import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.core.data.UserDataRepository
+import jp.co.yumemi.android.code_check.core.designsystem.theme.CodeCheckAppTheme
 import jp.co.yumemi.android.code_check.databinding.FragmentRepositoryInfoBinding
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -42,7 +43,7 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                MaterialTheme {
+                CodeCheckAppTheme {
                     RepositoryInfoRoute(
                         repositorySummary = args.githubRepositorySummary
                     )
