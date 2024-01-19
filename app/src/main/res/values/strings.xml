@@ -6,10 +6,10 @@
     <string name="written_language">Written in %s</string>
     <string name="language_not_specified">言語は設定されていません</string>
     <string name="owner_name_placeholder">Owner Name</string>
-    <string name="star_count_text">%d stars</string>
-    <string name="watcher_count_text">%d watchers</string>
-    <string name="fork_count_text">%d forks</string>
-    <string name="open_issue_count_text">%d open issues</string>
+    <string name="star_count_text">%s stars</string>
+    <string name="watcher_count_text">%s watchers</string>
+    <string name="fork_count_text">%s forks</string>
+    <string name="open_issue_count_text">%s open issues</string>
 
     <string name="error_dialog_title">レポジトリ情報の取得に失敗しました</string>
     <string name="error_dialog_message">時間をおいて再度実行するか、アプリを最新にアップデートしてください。\n解消されない場合はお手数ですが開発者へお問い合わせください</string>
