@@ -4,7 +4,7 @@
 
 本アプリは GitHub のリポジトリを検索するアプリです。
 
-<img src="docs/app.gif" width="320">
+<img src="docs/app_light.gif" width="320">
 
 ### 環境
 - IDE：Android Studio Jellyfish | 2023.3.1 Canary 2
