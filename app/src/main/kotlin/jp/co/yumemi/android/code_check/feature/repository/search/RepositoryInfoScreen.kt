@@ -29,10 +29,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.core.data.fake.dummySearchResults
 import jp.co.yumemi.android.code_check.core.designsystem.preview.MultiThemePreviews
 import jp.co.yumemi.android.code_check.core.designsystem.theme.CodeCheckAppTheme
 import jp.co.yumemi.android.code_check.core.model.GithubRepositorySummary
-import jp.co.yumemi.android.code_check.core.model.dummySearchResults
 
 @Composable
 fun RepositoryInfoRoute(

@@ -7,6 +7,7 @@ fun GithubRepository.toExternalModel(): GithubRepositorySummary {
         name = name,
         ownerIconUrl = owner.avatarUrl,
         language = language,
+        description = description,
         stargazersCount = stargazersCount,
         watchersCount = watchersCount,
         forksCount = forksCount,
