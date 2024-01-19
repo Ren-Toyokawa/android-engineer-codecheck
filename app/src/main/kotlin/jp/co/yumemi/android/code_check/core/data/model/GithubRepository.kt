@@ -10,8 +10,10 @@ import kotlinx.serialization.Serializable
 data class GithubRepository(
     @SerialName("id")
     val id: Int,
-    @SerialName("full_name")
+    @SerialName("name")
     val name: String,
+    @SerialName("full_name")
+    val fullName: String,
     @SerialName("owner")
     val owner: Owner,
     @SerialName("description")
@@ -32,4 +34,6 @@ data class GithubRepository(
 data class Owner(
     @SerialName("avatar_url")
     val avatarUrl: String,
+    @SerialName("login")
+    val name: String,
 )

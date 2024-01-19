@@ -74,7 +74,7 @@ fun RepositoryNameAndIcon(
         )
 
         Text(
-            text = repositorySummary.name,
+            text = repositorySummary.fullName,
             color = MaterialTheme.colorScheme.onBackground
         )
     }

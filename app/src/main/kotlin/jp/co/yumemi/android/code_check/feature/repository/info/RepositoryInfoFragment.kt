@@ -74,6 +74,8 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
     private fun navigateToRepositoryIssueFragment() {
         val action =
             RepositoryInfoFragmentDirections.actionRepositoryInfoFragmentToRepositoryIssueFragment(
+                repositoryName = args.githubRepositorySummary.name,
+                ownerName = args.githubRepositorySummary.ownerName
             )
 
         findNavController().navigate(action)

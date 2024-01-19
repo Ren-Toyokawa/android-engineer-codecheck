@@ -25,9 +25,7 @@ import javax.inject.Inject
  * リポジトリ検索画面のViewModel
  */
 @HiltViewModel
-class RepositorySearchViewModel
-@Inject
-constructor(
+class RepositorySearchViewModel @Inject constructor(
     private val githubRepositoryRepository: GithubRepositoryRepository,
     private val userDataRepository: UserDataRepository,
     private val savedStateHandle: SavedStateHandle

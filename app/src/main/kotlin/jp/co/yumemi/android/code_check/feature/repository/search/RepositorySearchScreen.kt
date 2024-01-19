@@ -1,7 +1,5 @@
 package jp.co.yumemi.android.code_check.feature.repository.search
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import jp.co.yumemi.android.code_check.R
@@ -150,7 +147,7 @@ fun RepositorySearchResultItem(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
-            repositorySearchResult.name,
+            repositorySearchResult.fullName,
             color = MaterialTheme.colorScheme.primary,
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
         )
