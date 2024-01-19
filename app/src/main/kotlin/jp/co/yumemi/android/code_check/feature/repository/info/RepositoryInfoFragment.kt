@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
@@ -42,7 +43,8 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
             setContent {
                 CodeCheckAppTheme {
                     RepositoryInfoRoute(
-                        repositorySummary = args.githubRepositorySummary
+                        repositorySummary = args.githubRepositorySummary,
+                        navigateRepositoryIssueFragment = ::navigateToRepositoryIssueFragment
                     )
                 }
             }
@@ -67,5 +69,13 @@ class RepositoryInfoFragment : Fragment(R.layout.fragment_repository_info) {
             val lastSearchDate = userDataRepository.latestSearchDate.first()
             Log.d(TAG, "検索した日時: $lastSearchDate")
         }
+    }
+
+    private fun navigateToRepositoryIssueFragment() {
+        val action =
+            RepositoryInfoFragmentDirections.actionRepositoryInfoFragmentToRepositoryIssueFragment(
+            )
+
+        findNavController().navigate(action)
     }
 }
